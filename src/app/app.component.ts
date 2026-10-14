@@ -12,4 +12,12 @@ export class AppComponent {
   toggleMenu() { this.menuOpen = !this.menuOpen; }
   closeMenu() { this.menuOpen = false; }
   wa(message: string) { return `https://wa.me/51991602920?text=${encodeURIComponent(message)}`; }
+
+  animateCard(event: MouseEvent) {
+    const card = event.currentTarget as HTMLElement;
+    card.classList.remove('is-spinning');
+    void card.offsetWidth;
+    card.classList.add('is-spinning');
+    setTimeout(() => card.classList.remove('is-spinning'), 620);
+  }
 }
