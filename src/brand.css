@@ -37,5 +37,10 @@ footer .brand span,footer .brand small{display:none}
 .business .tag{display:block;font-size:clamp(18px,1.65vw,26px);line-height:1.15;letter-spacing:.8px;margin-bottom:14px;font-weight:950;color:var(--agne-orange)}
 .business h3{font-size:clamp(38px,4.4vw,62px)}
 
+/* Optimized WhatsApp icon */
+.wa-float{width:64px;height:64px;padding:0;border-radius:50%;background:#25D366 url('/web/whatsapp-icon-128.png') center/54px 54px no-repeat;overflow:hidden;font-size:0;box-shadow:0 10px 30px rgba(0,0,0,.28);border:2px solid #fff}
+.wa-float span,.wa-float b{display:none}
+.wa-float:hover{transform:translateY(-3px) scale(1.04)}
+
 @media(max-width:900px){nav{background:var(--agne-navy)}nav.open a{color:#fff}.nav .brand{width:180px;flex-basis:180px}.business .tag{font-size:20px}}
-@media(max-width:560px){.nav .brand{width:155px;height:62px;flex-basis:155px}.business .tag{font-size:19px}.business h3{font-size:38px}footer .brand{width:190px}}
+@media(max-width:560px){.nav .brand{width:155px;height:62px;flex-basis:155px}.business .tag{font-size:19px}.business h3{font-size:38px}footer .brand{width:190px}.wa-float{width:58px;height:58px;background-size:50px 50px}}
