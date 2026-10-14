@@ -1,0 +1,41 @@
+:root{--agne-navy:#001B36;--agne-navy-deep:#001326;--agne-orange:#FF7900;--agne-amber:#F5A000;--agne-white:#FFFFFF;--agne-light:#DDE8F2}
+
+/* AGNE official identity */
+body{color:var(--agne-navy)}
+.nav{background:rgba(0,27,54,.97);border-bottom-color:rgba(255,255,255,.12)}
+.nav .brand{width:205px;height:70px;background:url('/web/agne-logo.webp') center/contain no-repeat;flex:0 0 205px}
+.nav .brand span,.nav .brand small{display:none}
+nav{color:var(--agne-white)}
+nav a:hover{color:var(--agne-orange)}
+.nav-cta{border-color:var(--agne-orange);background:var(--agne-orange);color:#fff}
+.menu-btn{color:#fff}
+.hero{background:linear-gradient(135deg,#f7fafc 0%,#fff 54%,#fff3e6 100%)}
+.eyebrow,.tag,.business a,.metrics i,.receipt strong{color:var(--agne-orange)}
+.hero h1 em{color:var(--agne-orange)}
+.primary{background:var(--agne-orange);color:#fff}
+.secondary{border-color:var(--agne-light)}
+.chart span{background:linear-gradient(180deg,var(--agne-orange),var(--agne-amber))}
+.dash-head span{color:var(--agne-orange)}
+.alert,.client .suggest{background:#fff3e6;color:var(--agne-orange)}
+.problem{background:var(--agne-navy);color:#fff}
+.problem-grid{background:#173a5c;border-color:#173a5c}
+.problem-grid article{background:var(--agne-navy)}
+.business li:before{color:var(--agne-orange)}
+.avatar{background:var(--agne-orange)}
+.rotation i{background:#fff3e6;color:var(--agne-orange)}
+.process{background:#f5f8fb}
+.steps article{border-top-color:var(--agne-orange)}
+.steps strong{color:var(--agne-orange)}
+.cta{background:var(--agne-navy);color:#fff}
+.cta .eyebrow{color:var(--agne-amber)}
+.cta .primary{background:var(--agne-orange);color:#fff}
+footer{background:var(--agne-navy-deep);color:var(--agne-light);border:0}
+footer .brand{width:220px;height:76px;background:url('/web/agne-logo.webp') left center/contain no-repeat}
+footer .brand span,footer .brand small{display:none}
+
+/* Make business-category headings prominent */
+.business .tag{display:block;font-size:clamp(18px,1.65vw,26px);line-height:1.15;letter-spacing:.8px;margin-bottom:14px;font-weight:950;color:var(--agne-orange)}
+.business h3{font-size:clamp(38px,4.4vw,62px)}
+
+@media(max-width:900px){nav{background:var(--agne-navy)}nav.open a{color:#fff}.nav .brand{width:180px;flex-basis:180px}.business .tag{font-size:20px}}
+@media(max-width:560px){.nav .brand{width:155px;height:62px;flex-basis:155px}.business .tag{font-size:19px}.business h3{font-size:38px}footer .brand{width:190px}}
