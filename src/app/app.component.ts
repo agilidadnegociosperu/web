@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 
 type TipoComanda = 'manual' | 'digital';
@@ -5,6 +6,7 @@ type TipoComanda = 'manual' | 'digital';
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './app.component.html'
 })
 export class AppComponent implements AfterViewInit {
