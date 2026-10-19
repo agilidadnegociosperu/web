@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 
 type TipoComanda = 'manual' | 'digital';
+type NivelUrgencia = 'controlable' | 'atencion' | 'alto' | 'critico';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent implements AfterViewInit {
   mozos = 4;
   tipoComanda: TipoComanda = 'manual';
   readonly precioPromedio = 30;
+  readonly precioPlanFull = 2500;
+  readonly precioArrendamiento = 100;
 
   toggleMenu() { this.menuOpen = !this.menuOpen; }
   closeMenu() { this.menuOpen = false; }
@@ -25,15 +28,18 @@ export class AppComponent implements AfterViewInit {
   actualizarPlatos(event: Event) {
     const value = Number((event.target as HTMLInputElement).value);
     this.platosDia = this.clamp(Number.isFinite(value) ? value : 1, 1, 2000);
+    this.renderConversionBlock();
   }
 
   actualizarMozos(event: Event) {
     const value = Number((event.target as HTMLInputElement).value);
     this.mozos = this.clamp(Number.isFinite(value) ? value : 1, 1, 100);
+    this.renderConversionBlock();
   }
 
   setTipoComanda(tipo: TipoComanda) {
     this.tipoComanda = tipo;
+    this.renderConversionBlock();
   }
 
   get cargaPorMozo() {
@@ -68,6 +74,10 @@ export class AppComponent implements AfterViewInit {
     return this.perdidaMensual * 12;
   }
 
+  get perdidaDiaria() {
+    return this.perdidaMensual / 30;
+  }
+
   get potencialRecuperable() {
     if (this.tipoComanda === 'digital') return 0;
     return Math.max(0, Math.round(this.calcularPerdidaMensual('manual') - this.calcularPerdidaMensual('digital')));
@@ -77,6 +87,44 @@ export class AppComponent implements AfterViewInit {
     return this.tipoComanda === 'manual'
       ? 'Una operación mejor controlada podría reducir una parte importante de esta fuga.'
       : 'Ya tienes sistema digital. El siguiente paso es revisar si la operación realmente lo está aprovechando.';
+  }
+
+  get nivelUrgencia(): NivelUrgencia {
+    if (this.perdidaMensual < 500) return 'controlable';
+    if (this.perdidaMensual < 1200) return 'atencion';
+    if (this.perdidaMensual < 2500) return 'alto';
+    return 'critico';
+  }
+
+  get nivelUrgenciaLabel() {
+    switch (this.nivelUrgencia) {
+      case 'controlable': return 'CONTROLABLE';
+      case 'atencion': return 'ATENCIÓN';
+      case 'alto': return 'ALTO';
+      default: return 'CRÍTICO';
+    }
+  }
+
+  get mensajeUrgencia() {
+    switch (this.nivelUrgencia) {
+      case 'controlable':
+        return 'La fuga estimada todavía es contenida, pero dejarla crecer mes a mes termina convirtiéndola en una pérdida importante.';
+      case 'atencion':
+        return 'Ya hay suficiente dinero escapándose como para revisar la operación antes de que el problema siga creciendo.';
+      case 'alto':
+        return 'La fuga estimada ya representa una cantidad importante cada mes. Corregir la operación ahora evita seguir acumulándola.';
+      default:
+        return 'La fuga estimada ya supera un nivel crítico. Cada semana que pasa puede seguir acumulando dinero que el negocio ya generó.';
+    }
+  }
+
+  get diasEquivalentePlanFull() {
+    if (this.perdidaDiaria <= 0) return 0;
+    return Math.max(1, Math.ceil(this.precioPlanFull / this.perdidaDiaria));
+  }
+
+  get mensualidadesEquivalentes() {
+    return Math.max(0, Math.round(this.perdidaMensual / this.precioArrendamiento));
   }
 
   private get tasasActuales() {
@@ -102,7 +150,96 @@ export class AppComponent implements AfterViewInit {
     return Math.min(Math.max(Math.round(value), min), max);
   }
 
+  private ensureConversionBlock() {
+    const calculator = document.querySelector('#calculadora');
+    const lossBottom = calculator?.querySelector('.loss-bottom');
+    if (!calculator || !lossBottom || calculator.querySelector('.conversion-block')) return;
+
+    const block = document.createElement('div');
+    block.className = 'conversion-block';
+    block.innerHTML = `
+      <section class="urgency-panel" aria-live="polite">
+        <div class="urgency-heading">
+          <div>
+            <small>NIVEL DE FUGA ESTIMADA</small>
+            <strong class="urgency-label">CRÍTICO</strong>
+          </div>
+          <span class="urgency-dot" aria-hidden="true"></span>
+        </div>
+        <div class="urgency-scale" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <i class="urgency-marker"></i>
+        </div>
+        <p class="urgency-copy"></p>
+        <div class="urgency-comparison">
+          <strong class="full-equivalent"></strong>
+          <span class="rent-equivalent"></span>
+        </div>
+        <small class="urgency-note">Comparación referencial basada en el resultado de esta calculadora; no constituye una auditoría financiera.</small>
+      </section>
+
+      <section id="planes" class="plans-section">
+        <div class="plans-heading">
+          <span>ELIGE CÓMO EMPEZAR</span>
+          <h2>Deja de postergarlo. Empieza a corregir la fuga.</h2>
+          <p>Dos modalidades para comenzar según la forma en que quieras invertir en tu operación.</p>
+        </div>
+        <div class="plans-grid">
+          <article class="plan-card plan-full">
+            <span class="plan-badge">PAGO ÚNICO · FULL</span>
+            <h3>Plan Full</h3>
+            <div class="plan-price"><small>S/</small><strong>2,500</strong></div>
+            <p class="plan-period">pago único</p>
+            <p>Para quienes prefieren realizar una sola inversión y empezar con la modalidad completa.</p>
+            <a class="plan-cta plan-cta-primary" href="${this.wa('Hola AGNE, vi la calculadora de pérdidas y quiero información del Plan Full de S/ 2,500.') }" target="_blank" rel="noopener">Quiero el Plan Full →</a>
+          </article>
+
+          <article class="plan-card plan-rent">
+            <span class="plan-badge">ARRENDAMIENTO MENSUAL</span>
+            <h3>Plan Mensual</h3>
+            <div class="plan-price"><small>S/</small><strong>100</strong></div>
+            <p class="plan-period">al mes</p>
+            <p>Para empezar con una inversión mensual mucho más baja y poner la operación en orden desde ahora.</p>
+            <a class="plan-cta" href="${this.wa('Hola AGNE, vi la calculadora de pérdidas y quiero información del arrendamiento de S/ 100 mensuales.') }" target="_blank" rel="noopener">Quiero empezar por S/ 100 →</a>
+          </article>
+        </div>
+        <small class="plans-note">Consulta por WhatsApp el alcance, condiciones y qué incluye cada modalidad.</small>
+      </section>
+    `;
+
+    lossBottom.before(block);
+    this.renderConversionBlock();
+  }
+
+  private renderConversionBlock() {
+    const block = document.querySelector<HTMLElement>('.conversion-block');
+    if (!block) return;
+
+    const panel = block.querySelector<HTMLElement>('.urgency-panel');
+    const label = block.querySelector<HTMLElement>('.urgency-label');
+    const copy = block.querySelector<HTMLElement>('.urgency-copy');
+    const fullEquivalent = block.querySelector<HTMLElement>('.full-equivalent');
+    const rentEquivalent = block.querySelector<HTMLElement>('.rent-equivalent');
+
+    if (!panel || !label || !copy || !fullEquivalent || !rentEquivalent) return;
+
+    panel.classList.remove('urgency-controlable', 'urgency-atencion', 'urgency-alto', 'urgency-critico');
+    panel.classList.add(`urgency-${this.nivelUrgencia}`);
+    label.textContent = this.nivelUrgenciaLabel;
+    copy.textContent = this.mensajeUrgencia;
+
+    fullEquivalent.textContent = this.diasEquivalentePlanFull > 0
+      ? `A este ritmo estimado, en ${this.diasEquivalentePlanFull} días la fuga podría equivaler a S/ 2,500.`
+      : 'Revisa tu operación antes de que la fuga aumente.';
+
+    rentEquivalent.textContent = this.mensualidadesEquivalentes > 0
+      ? `La fuga mensual estimada equivale a unas ${this.mensualidadesEquivalentes} mensualidades de S/ 100.`
+      : 'El plan mensual permite empezar con S/ 100 al mes.';
+  }
+
   ngAfterViewInit() {
+    this.ensureConversionBlock();
+
     const section = document.querySelector('#giros');
     const lead = section?.querySelector('.lead');
     if (lead) lead.textContent = 'Configuramos la solución alrededor de cómo realmente trabajas. Selecciona un rubro.';
