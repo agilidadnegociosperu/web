@@ -26,14 +26,18 @@ export class AppComponent implements AfterViewInit {
   wa(message: string) { return `https://wa.me/51991602920?text=${encodeURIComponent(message)}`; }
 
   actualizarPlatos(event: Event) {
-    const value = Number((event.target as HTMLInputElement).value);
-    this.platosDia = this.clamp(Number.isFinite(value) ? value : 1, 1, 2000);
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value);
+    this.platosDia = this.clamp(Number.isFinite(value) ? value : 10, 10, 2000);
+    input.value = String(this.platosDia);
     this.renderConversionBlock();
   }
 
   actualizarMozos(event: Event) {
-    const value = Number((event.target as HTMLInputElement).value);
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value);
     this.mozos = this.clamp(Number.isFinite(value) ? value : 1, 1, 100);
+    input.value = String(this.mozos);
     this.renderConversionBlock();
   }
 
@@ -150,6 +154,24 @@ export class AppComponent implements AfterViewInit {
     return Math.min(Math.max(Math.round(value), min), max);
   }
 
+  private configureCalculatorInputs() {
+    const inputs = document.querySelectorAll<HTMLInputElement>('#calculadora .loss-form input[type="number"]');
+    const platosInput = inputs.item(0);
+    const mozosInput = inputs.item(1);
+
+    if (platosInput) {
+      platosInput.min = '10';
+      platosInput.max = '2000';
+      platosInput.step = '10';
+    }
+
+    if (mozosInput) {
+      mozosInput.min = '1';
+      mozosInput.max = '100';
+      mozosInput.step = '1';
+    }
+  }
+
   private ensureConversionBlock() {
     const calculator = document.querySelector('#calculadora');
     const lossBottom = calculator?.querySelector('.loss-bottom');
@@ -238,6 +260,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.configureCalculatorInputs();
     this.ensureConversionBlock();
 
     const section = document.querySelector('#giros');
