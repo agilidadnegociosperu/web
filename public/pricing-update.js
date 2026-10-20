@@ -61,6 +61,10 @@
     if (fullCta && fullCta.textContent !== 'Quiero el Plan Full por S/ 2,499 →') fullCta.textContent = 'Quiero el Plan Full por S/ 2,499 →';
     if (monthlyCta && monthlyCta.textContent !== 'Quiero empezar por S/ 199/mes →') monthlyCta.textContent = 'Quiero empezar por S/ 199/mes →';
 
+    const note = document.querySelector('.plans-note');
+    const noteText = 'El equipamiento se define según compatibilidad y necesidad. Aprovechamos equipos existentes cuando sea técnicamente viable.';
+    if (note && note.textContent !== noteText) note.textContent = noteText;
+
     updateWhatsappHref(fullCta, 'Plan Full de S/ 2,500', 'Plan Full de S/ 2,499');
     updateWhatsappHref(monthlyCta, 'Plan Mensual de S/ 100', 'Plan Mensual de S/ 199');
     return true;
