@@ -24,14 +24,13 @@
   document.head.appendChild(style);
 
   const updateWhatsappHref = (anchor, oldText, newText) => {
-    if (!anchor?.href) return;
+    if (!anchor || !anchor.href) return;
     try {
       const url = new URL(anchor.href, window.location.href);
       const text = url.searchParams.get('text');
       if (!text || !text.includes(oldText)) return;
       url.searchParams.set('text', text.replace(oldText, newText));
-      const nextHref = url.toString();
-      if (anchor.href !== nextHref) anchor.href = nextHref;
+      anchor.href = url.toString();
     } catch (_) {}
   };
 
@@ -43,36 +42,53 @@
     const fullPrice = full.querySelector('.plan-price');
     const monthlyPrice = monthly.querySelector('.plan-price');
 
-    if (fullPrice) {
+    if (fullPrice && fullPrice.textContent.trim() !== 'S/2,499') {
       fullPrice.innerHTML = '<small>S/</small><strong>2,499</strong>';
-      if (!full.querySelector('.plan-original-price')) {
-        fullPrice.insertAdjacentHTML('beforebegin', '<div class="plan-original-price">Precio regular: <s>S/ 2,999</s><span class="plan-current-label">PRECIO PROMOCIONAL</span></div>');
-      }
+    }
+    if (fullPrice && !full.querySelector('.plan-original-price')) {
+      fullPrice.insertAdjacentHTML('beforebegin', '<div class="plan-original-price">Precio regular: <s>S/ 2,999</s><span class="plan-current-label">PRECIO PROMOCIONAL</span></div>');
     }
 
-    if (monthlyPrice) {
+    if (monthlyPrice && monthlyPrice.textContent.trim() !== 'S/199') {
       monthlyPrice.innerHTML = '<small>S/</small><strong>199</strong>';
-      if (!monthly.querySelector('.plan-original-price')) {
-        monthlyPrice.insertAdjacentHTML('beforebegin', '<div class="plan-original-price">Precio regular: <s>S/ 299</s><span class="plan-current-label">PRECIO PROMOCIONAL</span></div>');
-      }
+    }
+    if (monthlyPrice && !monthly.querySelector('.plan-original-price')) {
+      monthlyPrice.insertAdjacentHTML('beforebegin', '<div class="plan-original-price">Precio regular: <s>S/ 299</s><span class="plan-current-label">PRECIO PROMOCIONAL</span></div>');
     }
 
     const fullCta = full.querySelector('.plan-cta');
     const monthlyCta = monthly.querySelector('.plan-cta');
-    if (fullCta) fullCta.textContent = 'Quiero el Plan Full por S/ 2,499 →';
-    if (monthlyCta) monthlyCta.textContent = 'Quiero empezar por S/ 199/mes →';
+    if (fullCta && fullCta.textContent !== 'Quiero el Plan Full por S/ 2,499 →') fullCta.textContent = 'Quiero el Plan Full por S/ 2,499 →';
+    if (monthlyCta && monthlyCta.textContent !== 'Quiero empezar por S/ 199/mes →') monthlyCta.textContent = 'Quiero empezar por S/ 199/mes →';
 
     updateWhatsappHref(fullCta, 'Plan Full de S/ 2,500', 'Plan Full de S/ 2,499');
     updateWhatsappHref(monthlyCta, 'Plan Mensual de S/ 100', 'Plan Mensual de S/ 199');
-
     return true;
   };
 
-  const observer = new MutationObserver(() => syncPlans());
-  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+  let tries = 0;
+  const boot = () => {
+    if (syncPlans()) return;
+    tries += 1;
+    if (tries < 40) window.setTimeout(boot, 100);
+  };
 
-  document.addEventListener('DOMContentLoaded', syncPlans);
-  window.setTimeout(syncPlans, 0);
-  window.setTimeout(syncPlans, 300);
-  window.setTimeout(syncPlans, 1200);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  document.addEventListener('input', (event) => {
+    if (event.target && event.target.closest && event.target.closest('#calculadora')) {
+      window.setTimeout(syncPlans, 0);
+    }
+  });
+
+  document.addEventListener('click', (event) => {
+    const anchor = event.target && event.target.closest ? event.target.closest('.plan-card .plan-cta') : null;
+    if (!anchor) return;
+    if (anchor.closest('.plan-full')) updateWhatsappHref(anchor, 'Plan Full de S/ 2,500', 'Plan Full de S/ 2,499');
+    if (anchor.closest('.plan-rent')) updateWhatsappHref(anchor, 'Plan Mensual de S/ 100', 'Plan Mensual de S/ 199');
+  }, true);
 })();
