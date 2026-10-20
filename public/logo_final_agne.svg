@@ -16,7 +16,6 @@
       <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#000" flood-opacity=".3"/>
     </filter>
   </defs>
-
   <g fill="url(#g)" filter="url(#s)">
     <rect x="10" y="96" width="34" height="62" rx="17"/>
     <rect x="52" y="70" width="34" height="88" rx="17"/>
@@ -24,12 +23,10 @@
     <rect x="136" y="18" width="34" height="140" rx="17"/>
     <path d="M12 174c19-19 42-22 64-12 21 9 38 10 56-7 10-10 22-14 40-13-17 27-44 48-80 52-30 3-57-3-80-20z"/>
   </g>
-
   <g font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" filter="url(#s)">
     <text x="193" y="139" font-size="118" fill="#fff" letter-spacing="-7">AG</text>
     <text x="391" y="139" font-size="118" fill="url(#n)" letter-spacing="-7">N</text>
     <text x="493" y="139" font-size="118" fill="#fff" letter-spacing="-7">E</text>
   </g>
-
-  <text x="198" y="184" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="800" letter-spacing="2.5" fill="#fff">INTELIGENCIA DE NEGOCIOS</text>
+  <text x="198" y="184" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" fill="#fff" textLength="430" lengthAdjust="spacingAndGlyphs">INTELIGENCIA DE NEGOCIOS</text>
 </svg>
