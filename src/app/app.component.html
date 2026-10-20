@@ -1,81 +1,147 @@
-<header class="nav"><a class="brand" href="#calculadora"><span>AGNE</span><small>Agilidad para Negocios</small></a><button class="menu-btn" (click)="toggleMenu()" aria-label="Abrir menú">☰</button><nav [class.open]="menuOpen"><a href="#calculadora" (click)="closeMenu()">Calculadora</a><a href="#restaurantes" (click)="closeMenu()">Restaurantes</a><a href="#salones" (click)="closeMenu()">Salones</a><a href="#bodegas" (click)="closeMenu()">Bodegas</a><a href="#ferreterias" (click)="closeMenu()">Ferreterías</a><a class="nav-cta" href="#contacto" (click)="closeMenu()">Contacto</a></nav></header>
-<main>
-<section id="calculadora" class="loss-calculator">
-  <div class="loss-intro">
-    <span class="eyebrow">CALCULADORA DE PÉRDIDAS · RESTAURANTES</span>
-    <h1>¿Cuánto dinero se está escapando de tu restaurante?</h1>
-    <p>Ingresa 3 datos y obtén una estimación rápida de cuánto podrías estar dejando de ganar cada mes por errores, cobros olvidados y ventas que no llegan a concretarse.</p>
-    <div class="loss-note">Estimación referencial basada en una venta promedio de S/ {{ precioPromedio }} por plato.</div>
-  </div>
+<header class="nav">
+  <a class="brand" href="#/inicio" (click)="closeMenu()"><span>AGNE</span><small>Agilidad para Negocios</small></a>
+  <button class="menu-btn" type="button" (click)="toggleMenu()" aria-label="Abrir menú">☰</button>
+  <nav [class.open]="menuOpen">
+    <a href="#/inicio" [class.active]="pagina === 'inicio'" (click)="closeMenu()">Inicio</a>
+    <a href="#/restaurantes" [class.active]="pagina === 'restaurantes'" (click)="closeMenu()">Restaurantes</a>
+    <a href="#/ferreterias" [class.active]="pagina === 'ferreterias'" (click)="closeMenu()">Ferreterías</a>
+    <a href="#/bodegas" [class.active]="pagina === 'bodegas'" (click)="closeMenu()">Bodegas</a>
+    <a href="#/salones" [class.active]="pagina === 'salones'" (click)="closeMenu()">Salones de Belleza</a>
+    <a class="nav-cta" [href]="wa('Hola AGNE, quisiera información para mi negocio.')" target="_blank" rel="noopener">Contacto</a>
+  </nav>
+</header>
 
-  <div class="loss-layout">
-    <div class="loss-form" aria-label="Datos para calcular pérdidas">
-      <label>
-        <span>1. ¿Cuántos platos vendes al día?</span>
-        <input type="number" min="1" max="2000" [value]="platosDia" (input)="actualizarPlatos($event)" inputmode="numeric">
-      </label>
+<main [ngSwitch]="pagina">
+  <!-- INICIO -->
+  <ng-container *ngSwitchCase="'inicio'">
+    <section class="home-hero">
+      <span class="eyebrow">DIAGNÓSTICO AGNE</span>
+      <h1>¿Qué tipo de negocio quieres analizar?</h1>
+      <p>Elige tu giro. Cada operación tiene problemas, variables y oportunidades distintas, por eso cada negocio tiene ahora su propia página y diagnóstico.</p>
+      <div class="business-selector">
+        <a class="business-choice" href="#/restaurantes">
+          <span class="business-choice-icon">🍽️</span>
+          <div><small>01</small><strong>Restaurantes</strong><p>Pedidos, mesas, mozos, comandas, demoras y cobros olvidados.</p></div>
+          <b>Analizar →</b>
+        </a>
+        <a class="business-choice" href="#/ferreterias">
+          <span class="business-choice-icon">🔧</span>
+          <div><small>02</small><strong>Ferreterías</strong><p>Catálogo amplio, códigos de barras, ventas y stock básico por producto.</p></div>
+          <b>Analizar →</b>
+        </a>
+        <a class="business-choice" href="#/bodegas">
+          <span class="business-choice-icon">🏪</span>
+          <div><small>03</small><strong>Bodegas y minimarkets</strong><p>Ventas rápidas, catálogo, rotación y stock simple por unidad.</p></div>
+          <b>Analizar →</b>
+        </a>
+        <a class="business-choice" href="#/salones">
+          <span class="business-choice-icon">💇</span>
+          <div><small>04</small><strong>Salones de Belleza</strong><p>Clientes, historial, servicios, frecuencia de visita y ventas.</p></div>
+          <b>Analizar →</b>
+        </a>
+      </div>
+    </section>
 
-      <label>
-        <span>2. ¿Cuántos mozos atienden por turno?</span>
-        <input type="number" min="1" max="100" [value]="mozos" (input)="actualizarMozos($event)" inputmode="numeric">
-      </label>
+    <section class="process home-process">
+      <span class="eyebrow">SIN COMPLICACIONES</span>
+      <h2>Tecnología que se adapta a tu negocio</h2>
+      <div class="steps">
+        <article><strong>1</strong><b>Analizamos tu operación</b><p>Vemos cómo vendes, dónde pierdes tiempo y qué procesos necesitan más control.</p></article>
+        <article><strong>2</strong><b>Diseñamos la mejora</b><p>Definimos el flujo, productos, usuarios, equipos y controles que realmente necesitas.</p></article>
+        <article><strong>3</strong><b>Implementamos</b><p>Dejamos la solución configurada y lista para trabajar con el equipo compatible.</p></article>
+        <article><strong>4</strong><b>Medimos y ajustamos</b><p>Usamos ventas y reportes para revisar qué está mejorando y qué falta corregir.</p></article>
+      </div>
+    </section>
 
-      <div class="loss-command">
-        <span>3. ¿Cómo toman las comandas?</span>
-        <div class="loss-command-options">
-          <button type="button" [class.active]="tipoComanda === 'manual'" [attr.aria-pressed]="tipoComanda === 'manual'" (click)="setTipoComanda('manual')">📝 Manual / papel</button>
-          <button type="button" [class.active]="tipoComanda === 'digital'" [attr.aria-pressed]="tipoComanda === 'digital'" (click)="setTipoComanda('digital')">📱 Sistema digital</button>
+    <section class="features">
+      <div><span class="eyebrow">MÁS QUE REGISTRAR VENTAS</span><h2>Convierte tus datos en decisiones</h2><p>Cada venta deja información. AGNE te ayuda a convertirla en respuestas útiles para operar mejor.</p></div>
+      <div class="feature-grid">
+        <article><b>📊 Ventas</b><p>Descubre qué genera ingresos.</p></article>
+        <article><b>📦 Stock simple</b><p>Control por unidad donde realmente aporta valor.</p></article>
+        <article><b>👥 Clientes</b><p>Entiende hábitos y preferencias cuando aplica.</p></article>
+        <article><b>📱 Control</b><p>Consulta información desde donde estés.</p></article>
+      </div>
+    </section>
+
+    <section class="plans-section home-plans">
+      <div class="plans-heading"><span>ELIGE CÓMO EMPEZAR</span><h2>Dos formas de implementar AGNE</h2><p>El hardware se define según tu negocio y lo que ya tengas disponible.</p></div>
+      <div class="plans-grid">
+        <article class="plan-card plan-full"><span class="plan-badge">PAGO ÚNICO · FULL</span><h3>Plan Full</h3><div class="plan-price"><small>S/</small><strong>{{ precioPlanFull | number:'1.0-0' }}</strong></div><p class="plan-period">pago único</p><p>Para quien prefiere realizar una sola inversión y empezar con la modalidad completa.</p><a class="plan-cta plan-cta-primary" [href]="wa('Hola AGNE, quiero información del Plan Full de S/ 2,500.')" target="_blank">Quiero el Plan Full →</a></article>
+        <article class="plan-card plan-rent"><span class="plan-badge">ARRENDAMIENTO MENSUAL</span><h3>Plan Mensual</h3><div class="plan-price"><small>S/</small><strong>{{ precioArrendamiento }}</strong></div><p class="plan-period">al mes</p><p>Para empezar con una inversión mensual menor y poner la operación en orden.</p><a class="plan-cta" [href]="wa('Hola AGNE, quiero información del Plan Mensual de S/ 100.')" target="_blank">Quiero empezar por S/ 100 →</a></article>
+      </div>
+      <small class="plans-note">La compatibilidad y el hardware se revisan antes de cotizar. Aprovechamos equipos existentes cuando es técnicamente viable.</small>
+    </section>
+
+    <section class="cta"><span class="eyebrow">AGNE · AGILIDAD PARA NEGOCIOS</span><h2>Empieza por elegir tu giro</h2><p>Entra a la página de tu negocio y completa el diagnóstico correspondiente.</p><a class="btn primary big" href="#/restaurantes">Ver negocios →</a></section>
+  </ng-container>
+
+  <!-- RESTAURANTES -->
+  <ng-container *ngSwitchCase="'restaurantes'">
+    <section class="page-hero"><div><a class="page-back" href="#/inicio">← Todos los negocios</a><span class="eyebrow">RESTAURANTES · CEVICHERÍAS</span><h1>Ordena pedidos, cobros y operación.</h1><p>Calcula una fuga operativa estimada y revisa cómo digitalizar el flujo desde la mesa hasta el pago.</p></div><div class="page-hero-icon">🍽️</div></section>
+
+    <section id="calculadora" class="loss-calculator">
+      <div class="loss-intro"><span class="eyebrow">CALCULADORA DE PÉRDIDAS · RESTAURANTES</span><h2>¿Cuánto dinero se está escapando de tu restaurante?</h2><p>Ingresa 4 datos y obtén una estimación rápida de cuánto podrías estar dejando de ganar cada mes por errores, cobros olvidados y ventas que no llegan a concretarse.</p><div class="loss-note">Estimación referencial basada en una venta promedio de S/ {{ precioPromedio }} por plato.</div></div>
+      <div class="loss-layout">
+        <div class="loss-form">
+          <label><span>1. ¿Cuántos platos vendes al día?</span><div class="input-stepper"><input type="number" min="10" max="2000" step="10" [(ngModel)]="platosDia" (change)="normalizarRestaurante()"><div><button type="button" (click)="stepPlatos(10)">▲</button><button type="button" (click)="stepPlatos(-10)">▼</button></div></div></label>
+          <label><span>2. ¿Cuántos mozos atienden por turno?</span><div class="input-stepper"><input type="number" min="1" max="100" step="1" [(ngModel)]="mozos" (change)="normalizarRestaurante()"><div><button type="button" (click)="stepMozos(1)">▲</button><button type="button" (click)="stepMozos(-1)">▼</button></div></div></label>
+          <label><span>3. ¿Cuántas mesas tiene el restaurante?</span><div class="input-stepper"><input type="number" min="1" max="500" step="1" [(ngModel)]="mesas" (change)="normalizarRestaurante()"><div><button type="button" (click)="stepMesas(1)">▲</button><button type="button" (click)="stepMesas(-1)">▼</button></div></div></label>
+          <div class="loss-command"><span>4. ¿Cómo toman las comandas?</span><div class="loss-command-options"><button type="button" [class.active]="tipoComanda === 'manual'" (click)="tipoComanda='manual'">📝 Manual / papel</button><button type="button" [class.active]="tipoComanda === 'digital'" (click)="tipoComanda='digital'">📱 Sistema digital</button></div></div>
+          <div class="loss-load"><span>Carga estimada</span><strong>{{ cargaPorMozo | number:'1.0-0' }} platos por mozo / día</strong><small>{{ cargaPorMesa | number:'1.1-1' }} platos por mesa / día</small></div>
+        </div>
+
+        <div class="loss-result">
+          <div class="result-heading"><span class="loss-result-kicker">PODRÍAS ESTAR DEJANDO DE GANAR</span><details class="info-pop"><summary>i</summary><div>La estimación usa los datos ingresados y supuestos operativos conservadores. Sirve como diagnóstico orientativo, no como análisis financiero.</div></details></div>
+          <strong class="loss-money">S/ {{ perdidaMensual | number:'1.0-0' }}</strong><span class="loss-period">al mes</span><div class="loss-year">≈ S/ {{ perdidaAnual | number:'1.0-0' }} al año</div>
+          <div class="inline-urgency" [class]="'inline-urgency urgency-' + nivelUrgencia">
+            <div class="result-heading"><small>NIVEL DE FUGA ESTIMADA</small><details class="info-pop dark"><summary>i</summary><div>{{ mensajeUrgencia }}<small>Estimación referencial basada en los datos ingresados; no constituye un análisis financiero.</small></div></details></div>
+            <div class="urgency-status"><span>{{ nivelUrgenciaEmoji }}</span><strong>{{ nivelUrgenciaLabel }}</strong></div>
+            <div class="urgency-meter"><div class="urgency-pointer" [style.left]="urgencyPosition"><span>TU NIVEL</span><b>▼</b></div><div class="urgency-scale"><i></i><i></i><i></i><i></i></div><div class="urgency-scale-labels"><span>CONTROLABLE</span><span>ATENCIÓN</span><span>ALTO</span><span>CRÍTICO</span></div></div>
+          </div>
+          <div *ngIf="tipoComanda === 'manual'" class="loss-recovery"><small>Potencial de reducción estimado al ordenar y digitalizar mejor la operación</small><strong>hasta S/ {{ potencialRecuperable | number:'1.0-0' }} / mes</strong></div>
         </div>
       </div>
 
-      <div class="loss-load">
-        <span>Carga estimada</span>
-        <strong>{{ cargaPorMozo | number:'1.0-0' }} platos por mozo / día</strong>
-      </div>
-    </div>
+      <section class="requirements-panel"><div class="requirements-heading"><span class="requirements-eyebrow">APROVECHEMOS LO QUE YA TIENES</span><h2>¿Con qué equipos cuentas actualmente?</h2><p>Marca lo que ya tienes. AGNE revisa compatibilidad antes de incluirlo en la implementación.</p></div><div class="requirements-grid"><label class="requirement-card" *ngFor="let equipo of equiposOpciones" [class.selected]="equipoSeleccionado(equipo.id)"><input type="checkbox" [checked]="equipoSeleccionado(equipo.id)" (change)="toggleEquipo(equipo.id, $any($event.target).checked)"><span class="requirement-check">✓</span><span class="requirement-icon">{{ equipo.icono }}</span><span class="requirement-copy"><strong>{{ equipo.etiqueta }}</strong><small>{{ equipo.detalle }}</small></span></label></div><div class="requirements-note">La selección no garantiza compatibilidad. Se revisan modelo, conexión y estado antes de considerar un equipo reutilizable.</div></section>
 
-    <div class="loss-result" aria-live="polite">
-      <span class="loss-result-kicker">PODRÍAS ESTAR DEJANDO DE GANAR</span>
-      <strong class="loss-money">S/ {{ perdidaMensual | number:'1.0-0' }}</strong>
-      <span class="loss-period">al mes</span>
-      <div class="loss-year">≈ S/ {{ perdidaAnual | number:'1.0-0' }} al año</div>
-      <p>{{ mensajeResultado }}</p>
+      <div class="loss-bottom"><p><strong>No siempre necesitas vender más.</strong> Primero evita perder parte de lo que ya estás generando.</p><a class="btn primary big" [href]="whatsappRestaurante" target="_blank">Quiero analizar mi operación →</a></div>
+    </section>
 
-      <div *ngIf="tipoComanda === 'manual'" class="loss-recovery">
-        <small>Potencial de reducción estimado al ordenar y digitalizar mejor la operación</small>
-        <strong>hasta S/ {{ potencialRecuperable | number:'1.0-0' }} / mes</strong>
-      </div>
-    </div>
-  </div>
+    <section class="solutions restaurant-feature"><article class="business restaurant-business"><div class="biz-num">01</div><div><span class="tag">RESTAURANTES · CEVICHERÍAS</span><h3>De la mesa a cocina, sin perder el pedido.</h3><p>Reduce errores y controla cada venta desde que el mozo registra el pedido hasta que el cliente paga.</p><ul><li>Pedidos y comandas organizadas</li><li>Control de adicionales</li><li>Ventas y caja</li><li>Platos más vendidos</li><li>Reportes para tomar decisiones</li><li>Stock simple de bebidas y consumibles por unidad</li></ul><a [href]="whatsappRestaurante" target="_blank">Quiero ordenar mi restaurante →</a></div><div class="restaurant-order-photo"><img src="restaurantes/11_comandera2.png" width="900" height="760" loading="lazy" alt="Comandera para restaurante y cevichería"></div></article></section>
 
-  <div class="loss-breakdown">
-    <article>
-      <span>🍽️</span>
-      <div><small>Pedidos equivocados</small><strong>{{ pedidosEquivocadosSemana }} / semana</strong></div>
-    </article>
-    <article>
-      <span>🧾</span>
-      <div><small>Platos o adicionales sin cobrar</small><strong>{{ cobrosOlvidadosSemana }} / semana</strong></div>
-    </article>
-    <article>
-      <span>⏱️</span>
-      <div><small>Ventas perdidas por demoras</small><strong>{{ ventasPerdidasSemana }} / semana</strong></div>
-    </article>
-  </div>
+    <section class="problem hook-pains"><div class="pain-heading"><span class="eyebrow">¿ESTO PASA EN TU RESTAURANTE?</span><h2>El desorden que parece “normal” te está costando dinero.</h2><p class="lead">Pedidos mal tomados, demoras y cuentas incorrectas. En un día fuerte, un pequeño error repetido termina costando clientes y dinero.</p></div><div class="pain-gallery"><figure><img src="restaurantes/01_pedidos_mal_tomados.jpg" alt="Mozo confundido por pedidos mal tomados"></figure><figure><img src="restaurantes/02_platos_que_tardan_en_salir.jpg" alt="Cocina saturada y platos que tardan en salir"></figure><figure><img src="restaurantes/03_se_olvidan_de_traer_algo.jpg" alt="Cliente esperando un adicional que no llega"></figure><figure><img src="restaurantes/04_cuentas_incorrectas.jpg" alt="Problemas al calcular cuentas del restaurante"></figure><figure><img src="restaurantes/05_sin_informacion_en_tiempo_real.jpg" alt="Dueño sin información de ventas en tiempo real"></figure><figure><img src="restaurantes/06_clientes_insatisfechos.jpg" alt="Clientes insatisfechos por mala atención"></figure></div></section>
 
-  <div class="loss-bottom">
-    <p><strong>No siempre necesitas vender más.</strong> Primero evita perder parte de lo que ya estás generando.</p>
-    <a class="btn primary big" [href]="wa('Hola AGNE, usé la calculadora de pérdidas. Vendo aproximadamente ' + platosDia + ' platos al día, tengo ' + mozos + ' mozos y uso comandas ' + tipoComanda + '. Quiero analizar mi operación.')" target="_blank">Quiero analizar mi operación →</a>
-  </div>
-  <small class="loss-disclaimer">Esta herramienta muestra una estimación orientativa basada en supuestos operativos. El resultado real depende de los procesos, precios, horarios y forma de trabajo de cada restaurante.</small>
-</section>
+    <section class="hero restaurant-solution"><div class="hero-copy"><span class="eyebrow">AGNE · RESTAURANTES</span><h2>Ordena tu restaurante.<br><em>Vende mejor.</em><br>Controla todo.</h2><p>Conecta pedidos, ventas y stock simple en una operación más clara. Menos errores y más información para decidir.</p><div class="trust"><span>✓ Pedidos claros: menos errores y olvidos</span><span>✓ Ventas registradas: cuentas que sí cuadran</span><span>✓ Mejor atención: más rapidez para el cliente</span></div><div class="solution-photo"><img src="restaurantes/08_chef_celebra.png" alt="Cocinero recibiendo una comanda en cocina"></div></div><div class="solution-media"><div class="solution-photo"><img src="restaurantes/07_Pedido_feliz_cevicheria.png" alt="Azafata tomando un pedido con una tablet"></div><div class="solution-photo benefit-photo"><img src="restaurantes/09_dueño_feliz.png" alt="Dueño revisando ingresos desde el celular"></div><div class="trust"><span>✓ Controla tus ingresos desde tu celular.</span></div></div></section>
 
-<section id="giros" style="padding:36px max(7vw,22px) 42px;background:#fff;color:#00233f"><span class="eyebrow">SOLUCIONES POR GIRO DE NEGOCIO</span><h2>No todos los negocios funcionan igual</h2><p class="lead" style="margin-bottom:26px">Configuramos la solución alrededor de cómo realmente trabajas.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px"><a href="#restaurantes" style="min-height:145px;padding:22px 14px;border:1px solid #dfe7e1;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;box-shadow:0 8px 24px rgba(0,35,63,.06)"><span style="font-size:42px;line-height:1">🍽️</span><strong>Restaurantes<br>y cevicherías</strong></a><a href="#salones" style="min-height:145px;padding:22px 14px;border:1px solid #dfe7e1;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;box-shadow:0 8px 24px rgba(0,35,63,.06)"><span style="font-size:42px;line-height:1">💇</span><strong>Salones de<br>belleza</strong></a><a href="#bodegas" style="min-height:145px;padding:22px 14px;border:1px solid #dfe7e1;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;box-shadow:0 8px 24px rgba(0,35,63,.06)"><span style="font-size:42px;line-height:1">🏪</span><strong>Bodegas y<br>minimarkets</strong></a><a href="#ferreterias" style="min-height:145px;padding:22px 14px;border:1px solid #dfe7e1;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;box-shadow:0 8px 24px rgba(0,35,63,.06)"><span style="font-size:42px;line-height:1">🔧</span><strong>Ferreterías</strong></a></div></section>
-<section class="solutions restaurant-feature"><article id="restaurantes" class="business restaurant-business"><div class="biz-num">01</div><div><span class="tag">RESTAURANTES · CEVICHERÍAS</span><h3>De la mesa a cocina, sin perder el pedido.</h3><p>Reduce errores y controla cada venta desde que el mozo registra el pedido hasta que el cliente paga.</p><ul><li>Pedidos y comandas organizadas</li><li>Control de adicionales</li><li>Ventas y caja</li><li>Platos más vendidos</li><li>Reportes para tomar decisiones</li><li>Inventario de productos</li></ul><a [href]="wa('Hola AGNE, tengo un restaurante/cevichería y quisiera información.')" target="_blank">Quiero ordenar mi restaurante →</a></div><div class="restaurant-order-photo"><img src="restaurantes/11_comandera2.png" width="900" height="760" loading="lazy" alt="Comandera para restaurante y cevichería"></div></article></section>
-<section id="inicio" class="problem hook-pains"><div class="pain-heading"><span class="eyebrow">¿ESTO PASA EN TU NEGOCIO?</span><h1>El desorden que parece “normal” te está costando dinero.</h1><p class="lead">Pedidos mal tomados, demoras y cuentas incorrectas. En un día fuerte, un pequeño error repetido muchas veces termina costando clientes y dinero.</p></div><div class="pain-gallery"><figure><img src="restaurantes/01_pedidos_mal_tomados.jpg" alt="Mozo confundido por pedidos mal tomados"></figure><figure><img src="restaurantes/02_platos_que_tardan_en_salir.jpg" alt="Cocina saturada y platos que tardan en salir"></figure><figure><img src="restaurantes/03_se_olvidan_de_traer_algo.jpg" alt="Cliente esperando un adicional que no llega"></figure><figure><img src="restaurantes/04_cuentas_incorrectas.jpg" alt="Problemas al calcular cuentas del restaurante"></figure><figure><img src="restaurantes/05_sin_informacion_en_tiempo_real.jpg" alt="Dueño sin información de ventas en tiempo real"></figure><figure><img src="restaurantes/06_clientes_insatisfechos.jpg" alt="Clientes insatisfechos por mala atención"></figure></div><div class="actions"><a class="btn primary" [href]="wa('Hola AGNE, estos problemas pasan en mi negocio y quiero solucionarlos.')" target="_blank">Esto pasa en mi negocio →</a></div></section>
-<section id="propuesta" class="hero"><div class="hero-copy"><span class="eyebrow">AGNE · AGILIDAD PARA NEGOCIOS</span><h2>Ordena tu negocio.<br><em>Vende mejor.</em><br>Controla todo.</h2><p>Conecta ventas, pedidos, inventario y clientes en una sola operación. Menos errores, menos pérdidas y más información para tomar decisiones.</p><div class="trust"><span>✓ Pedidos claros: menos errores y olvidos</span></div><div class="solution-photo"><img src="restaurantes/08_chef_celebra.png" alt="Cocinero feliz recibiendo la comanda en cocina"></div><div class="trust"><span>✓ Ventas registradas: cuentas que sí cuadran</span></div></div><div class="solution-media"><div class="solution-photo"><img src="restaurantes/07_Pedido_feliz_cevicheria.png" alt="Azafata tomando un pedido con una tablet en una cevichería"></div><div class="trust trust-after-media"><span>✓ Clientes mejor atendidos: más rapidez y más posibilidades de que regresen.</span></div><div class="solution-photo benefit-photo"><img src="restaurantes/09_dueño_feliz.png" alt="Dueño de restaurante revisando los ingresos de su cevichería desde el celular"></div><div class="trust"><span>✓ Controla tus ingresos en cualquier momento desde tu celular.</span></div></div></section>
-<section id="soluciones" class="solutions"><article id="salones" class="business reverse"><div class="biz-num">02</div><div><span class="tag">SALONES DE BELLEZA</span><h3>Conoce a tus clientes y haz que regresen.</h3><p>No solo sepas cuánto vendiste. Construye un historial que te permita entender qué busca cada cliente y cuándo suele volver.</p><ul><li>Inventario de cosméticos e insumos</li><li>Historial de trabajos por cliente</li><li>Frecuencia de visitas</li><li>Mejores clientes y servicios favoritos</li><li>Rendimiento por servicio/profesional</li><li>Segmentación para publicidad</li><li>Ventas, caja y tendencias</li><li>Identifica clientes que dejaron de visitar</li></ul><a [href]="wa('Hola AGNE, tengo un salón de belleza y quisiera información.')" target="_blank">Quiero conocer mejor a mis clientes →</a></div><div class="visual client"><div class="avatar">EV</div><b>Cliente frecuente</b><small>Última visita: hace 18 días</small><div><span>Manicure</span><strong>6 visitas</strong></div><div><span>Tinte</span><strong>4 visitas</strong></div><div class="suggest">💡 Momento ideal para ofrecer manicure</div></div></article><article id="bodegas" class="business"><div class="biz-num">03</div><div><span class="tag">BODEGAS · MINIMARKETS</span><h3>Tu dinero está en tus estantes. Sepamos dónde.</h3><p>Controla el movimiento de cada producto y compra basándote en datos, no en memoria.</p><ul><li>Stock actualizado</li><li>Control de compras y ventas</li><li>Productos de alta y baja rotación</li><li>Alertas de stock bajo</li><li>Control de caja</li><li>Márgenes y movimientos</li><li>Mercadería inmovilizada</li><li>Reportes de ventas</li></ul><a [href]="wa('Hola AGNE, tengo una bodega/minimarket y quisiera información.')" target="_blank">Quiero controlar mi inventario →</a></div><div class="visual stock"><b>Movimiento de stock</b><div><span>Inca Kola 500ml</span><strong>42</strong></div><div><span>Arroz 1kg</span><strong>18</strong></div><div class="low"><span>Aceite 1L</span><strong>4 ⚠</strong></div><div><span>Leche</span><strong>27</strong></div><small>Stock bajo detectado automáticamente</small></div></article><article id="ferreterias" class="business reverse"><div class="biz-num">04</div><div><span class="tag">FERRETERÍAS</span><h3>Que tu plata no se quede dormida.</h3><p>Identifica qué productos se mueven y cuáles están ocupando espacio mientras inmovilizan tu capital.</p><ul><li>Inventario y stock</li><li>Ventas y caja</li><li>Productos con mayor rotación</li><li>Productos que casi no se venden</li><li>Control de entradas y salidas</li><li>Información para mejorar compras</li><li>Consulta desde celular</li><li>Reportes claros</li></ul><a [href]="wa('Hola AGNE, tengo una ferretería y quisiera información.')" target="_blank">Quiero controlar mi ferretería →</a></div><div class="visual rotation"><b>Rotación de productos</b><div><span>Tornillos 1/4</span><i>ALTA</i></div><div><span>Cemento</span><i>ALTA</i></div><div><span>Taladro modelo X</span><i class="slow">BAJA</i></div><small>Detecta dónde está inmovilizado tu capital.</small></div></article></section>
-<section id="proceso" class="process"><span class="eyebrow">SIN COMPLICACIONES</span><h2>Tecnología que se adapta a tu negocio</h2><div class="steps"><article><strong>1</strong><b>Analizamos tu operación</b><p>Vemos cómo vendes, dónde pierdes tiempo, dónde se escapa dinero y qué procesos necesitan control.</p></article><article><strong>2</strong><b>Diseñamos la mejora</b><p>Definimos el flujo, productos, usuarios, impresoras y controles que realmente necesita tu negocio.</p></article><article><strong>3</strong><b>Implementamos</b><p>Dejamos la solución lista para trabajar y corregimos los puntos críticos detectados.</p></article><article><strong>4</strong><b>Medimos y ajustamos</b><p>Usamos ventas, inventario y reportes para comprobar qué está mejorando y qué falta corregir.</p></article></div></section>
-<section id="inteligencia" class="features"><div><span class="eyebrow">MÁS QUE REGISTRAR VENTAS</span><h2>Convierte tus datos en decisiones</h2><p>Cada venta deja información. AGNE te ayuda a convertirla en respuestas: qué comprar, qué promocionar y qué está funcionando.</p></div><div class="feature-grid"><article><b>📦 Inventario</b><p>Conoce existencias y movimiento.</p></article><article><b>📊 Ventas</b><p>Descubre qué genera ingresos.</p></article><article><b>👥 Clientes</b><p>Entiende hábitos y preferencias.</p></article><article><b>📱 Control</b><p>Consulta información desde donde estés.</p></article></div></section>
-<section id="contacto" class="cta"><span class="eyebrow">HABLEMOS DE TU NEGOCIO</span><h2>¿Cuánto dinero podría estar escapándose de tu operación?</h2><p>Cuéntanos cómo trabajas. Analizamos tu operación y te explicamos de forma sencilla dónde puedes recuperar control, tiempo y dinero.</p><a class="btn primary big" [href]="whatsapp" target="_blank">WhatsApp: 991 602 920</a><small>Atención en Perú · AGNE — Agilidad para Negocios</small></section></main>
-<footer><div class="brand"><span>AGNE</span><small>Agilidad para Negocios</small></div><p>Soluciones de gestión para restaurantes, salones de belleza, bodegas, minimarkets y ferreterías en Perú.</p><p>© 2026 AGNE</p></footer><a class="wa-float" [href]="whatsapp" target="_blank" aria-label="Escribir a AGNE por WhatsApp"><span>☎</span><b>WhatsApp</b></a>
+    <section class="cta"><span class="eyebrow">RESTAURANTES</span><h2>¿Quieres revisar tu operación?</h2><p>Envíanos el diagnóstico y te indicamos qué puede reutilizarse y qué hace falta.</p><a class="btn primary big" [href]="whatsappRestaurante" target="_blank">Enviar diagnóstico por WhatsApp →</a></section>
+  </ng-container>
+
+  <!-- FERRETERÍAS -->
+  <ng-container *ngSwitchCase="'ferreterias'">
+    <section class="page-hero"><div><a class="page-back" href="#/inicio">← Todos los negocios</a><span class="eyebrow">FERRETERÍAS</span><h1>Que tu plata no se quede dormida.</h1><p>Evalúa qué tan compleja se está volviendo tu operación y ordena ventas, catálogo y stock básico por producto.</p></div><div class="page-hero-icon">🔧</div></section>
+    <section class="diagnostic-section"><div class="diagnostic-intro"><span class="eyebrow">DIAGNÓSTICO RÁPIDO · FERRETERÍAS</span><h2>¿Qué tan difícil es controlar tu ferretería?</h2><p>No inventamos una pérdida monetaria. Medimos complejidad operativa según catálogo, movimiento diario y forma de control.</p></div><div class="diagnostic-layout"><div class="diagnostic-form"><label><span>1. ¿Cuántos productos diferentes manejas?</span><input type="number" min="10" max="50000" step="50" [(ngModel)]="ferProductos" (change)="normalizarFerreteria()"></label><label><span>2. ¿Cuántas ventas o tickets haces al día?</span><input type="number" min="1" max="5000" step="5" [(ngModel)]="ferVentas" (change)="normalizarFerreteria()"></label><fieldset><legend>3. ¿Cómo controlas actualmente el stock?</legend><div class="choice-row"><button type="button" [class.active]="ferControl === 'manual'" (click)="ferControl='manual'">📝 Manual / memoria / Excel</button><button type="button" [class.active]="ferControl === 'digital'" (click)="ferControl='digital'">📱 Sistema digital</button></div></fieldset></div><div class="diagnostic-result"><small>COMPLEJIDAD OPERATIVA ESTIMADA</small><strong>{{ ferNivel }}</strong><p>{{ ferMensaje }}</p><div class="diagnostic-metrics"><div><b>{{ ferProductos | number }}</b><span>productos aprox.</span></div><div><b>{{ ferVentas }}</b><span>ventas / día</span></div><div><b>{{ ferControl === 'manual' ? 'MANUAL' : 'DIGITAL' }}</b><span>control actual</span></div></div><a class="btn primary" [href]="whatsappFerreteria" target="_blank">Quiero ordenar mi ferretería →</a></div></div><small class="diagnostic-disclaimer">Diagnóstico orientativo. AGNE trabaja con ventas y stock básico por producto; no ofrecemos inventario avanzado, materias primas ni costeo avanzado.</small></section>
+    <section class="solutions"><article class="business"><div class="biz-num">02</div><div><span class="tag">FERRETERÍAS</span><h3>Controla miles de referencias sin depender de memoria.</h3><p>Identifica qué productos se mueven, cuáles casi no salen y qué necesitas reponer usando una operación más ordenada.</p><ul><li>Catálogo de productos</li><li>Códigos de barras</li><li>Ventas y caja</li><li>Stock básico por producto</li><li>Productos de alta y baja rotación</li><li>Consulta de reportes desde el celular</li></ul><a [href]="whatsappFerreteria" target="_blank">Quiero controlar mi ferretería →</a></div><div class="visual rotation"><b>Rotación de productos</b><div><span>Tornillos 1/4</span><i>ALTA</i></div><div><span>Brocas</span><i>ALTA</i></div><div><span>Taladro modelo X</span><i class="slow">BAJA</i></div><small>Detecta dónde hay productos con poco movimiento.</small></div></article></section>
+    <section class="page-note"><span>🔎</span><div><h3>¿Usas lector de códigos de barras?</h3><p>Podemos revisar un lector HID compatible y conectarlo al dispositivo Android de caja. La PC puede aprovecharse para administración y carga de catálogo.</p></div></section>
+    <section class="cta"><span class="eyebrow">FERRETERÍAS</span><h2>Empieza por ordenar catálogo y ventas</h2><p>El diagnóstico nos da una primera idea del tamaño de la implementación.</p><a class="btn primary big" [href]="whatsappFerreteria" target="_blank">Enviar diagnóstico →</a></section>
+  </ng-container>
+
+  <!-- BODEGAS -->
+  <ng-container *ngSwitchCase="'bodegas'">
+    <section class="page-hero"><div><a class="page-back" href="#/inicio">← Todos los negocios</a><span class="eyebrow">BODEGAS · MINIMARKETS</span><h1>Tu dinero está en tus estantes. Sepamos dónde.</h1><p>Evalúa el volumen de tu tienda y ordena ventas y stock simple por unidad sin depender de memoria.</p></div><div class="page-hero-icon">🏪</div></section>
+    <section class="diagnostic-section"><div class="diagnostic-intro"><span class="eyebrow">DIAGNÓSTICO RÁPIDO · BODEGAS</span><h2>¿Qué tan compleja es tu operación diaria?</h2><p>Medimos catálogo, volumen de tickets y forma de control para estimar la complejidad operativa.</p></div><div class="diagnostic-layout"><div class="diagnostic-form"><label><span>1. ¿Cuántos productos diferentes manejas?</span><input type="number" min="10" max="30000" step="50" [(ngModel)]="bodProductos" (change)="normalizarBodega()"></label><label><span>2. ¿Cuántas ventas o tickets haces al día?</span><input type="number" min="1" max="5000" step="5" [(ngModel)]="bodVentas" (change)="normalizarBodega()"></label><fieldset><legend>3. ¿Cómo controlas actualmente el stock?</legend><div class="choice-row"><button type="button" [class.active]="bodControl === 'manual'" (click)="bodControl='manual'">📝 Manual / memoria / Excel</button><button type="button" [class.active]="bodControl === 'digital'" (click)="bodControl='digital'">📱 Sistema digital</button></div></fieldset></div><div class="diagnostic-result"><small>COMPLEJIDAD OPERATIVA ESTIMADA</small><strong>{{ bodNivel }}</strong><p>{{ bodMensaje }}</p><div class="diagnostic-metrics"><div><b>{{ bodProductos | number }}</b><span>productos aprox.</span></div><div><b>{{ bodVentas }}</b><span>ventas / día</span></div><div><b>{{ bodControl === 'manual' ? 'MANUAL' : 'DIGITAL' }}</b><span>control actual</span></div></div><a class="btn primary" [href]="whatsappBodega" target="_blank">Quiero ordenar mi tienda →</a></div></div><small class="diagnostic-disclaimer">Diagnóstico orientativo. El alcance de AGNE es stock simple por producto/unidad, no inventario avanzado.</small></section>
+    <section class="solutions"><article class="business"><div class="biz-num">03</div><div><span class="tag">BODEGAS · MINIMARKETS</span><h3>Controla lo que entra, se vende y queda.</h3><p>Organiza el movimiento de productos y compra basándote en datos, no en memoria.</p><ul><li>Catálogo y códigos de barras</li><li>Ventas y caja</li><li>Stock simple por unidad</li><li>Productos de alta y baja rotación</li><li>Alertas de stock bajo</li><li>Reportes de ventas</li></ul><a [href]="whatsappBodega" target="_blank">Quiero controlar mi minimarket →</a></div><div class="visual stock"><b>Movimiento de stock</b><div><span>Inca Kola 500 ml</span><strong>42</strong></div><div><span>Arroz 1 kg</span><strong>18</strong></div><div class="low"><span>Aceite 1 L</span><strong>4 ⚠</strong></div><div><span>Leche</span><strong>27</strong></div><small>Stock bajo detectado en productos vendidos por unidad.</small></div></article></section>
+    <section class="page-note"><span>▥</span><div><h3>La carga inicial no tiene que ser producto por producto en Loyverse</h3><p>Podemos levantar códigos con lector, preparar el archivo de importación y cargar el catálogo de forma masiva.</p></div></section>
+    <section class="cta"><span class="eyebrow">BODEGAS Y MINIMARKETS</span><h2>Ordena la tienda desde la caja</h2><p>Ventas rápidas, catálogo claro y stock simple para saber qué está pasando.</p><a class="btn primary big" [href]="whatsappBodega" target="_blank">Enviar diagnóstico →</a></section>
+  </ng-container>
+
+  <!-- SALONES -->
+  <ng-container *ngSwitchCase="'salones'">
+    <section class="page-hero"><div><a class="page-back" href="#/inicio">← Todos los negocios</a><span class="eyebrow">SALONES DE BELLEZA</span><h1>Conoce a tus clientes y haz que regresen.</h1><p>Evalúa la carga de atención y organiza historial, servicios y ventas sin depender de mensajes dispersos.</p></div><div class="page-hero-icon">💇</div></section>
+    <section class="diagnostic-section"><div class="diagnostic-intro"><span class="eyebrow">DIAGNÓSTICO RÁPIDO · SALONES</span><h2>¿Qué tan difícil es recordar y seguir a cada cliente?</h2><p>Medimos volumen de atenciones, cantidad de profesionales y forma actual de llevar el historial.</p></div><div class="diagnostic-layout"><div class="diagnostic-form"><label><span>1. ¿Cuántos clientes o atenciones tienes al mes?</span><input type="number" min="1" max="10000" step="10" [(ngModel)]="salClientes" (change)="normalizarSalon()"></label><label><span>2. ¿Cuántos profesionales atienden?</span><input type="number" min="1" max="100" step="1" [(ngModel)]="salProfesionales" (change)="normalizarSalon()"></label><fieldset><legend>3. ¿Cómo llevas el historial de clientes?</legend><div class="choice-row"><button type="button" [class.active]="salControl === 'manual'" (click)="salControl='manual'">💬 WhatsApp / memoria / cuaderno</button><button type="button" [class.active]="salControl === 'digital'" (click)="salControl='digital'">📱 Sistema digital</button></div></fieldset></div><div class="diagnostic-result"><small>COMPLEJIDAD OPERATIVA ESTIMADA</small><strong>{{ salNivel }}</strong><p>{{ salMensaje }}</p><div class="diagnostic-metrics"><div><b>{{ salClientes }}</b><span>atenciones / mes</span></div><div><b>{{ salProfesionales }}</b><span>profesionales</span></div><div><b>{{ salControl === 'manual' ? 'MANUAL' : 'DIGITAL' }}</b><span>historial actual</span></div></div><a class="btn primary" [href]="whatsappSalon" target="_blank">Quiero ordenar mi salón →</a></div></div><small class="diagnostic-disclaimer">Diagnóstico orientativo basado únicamente en los datos ingresados.</small></section>
+    <section class="solutions"><article class="business"><div class="biz-num">04</div><div><span class="tag">SALONES DE BELLEZA</span><h3>Construye un historial que te ayude a atender mejor.</h3><p>No solo sepas cuánto vendiste. Organiza información para entender qué busca cada cliente y cuándo suele volver.</p><ul><li>Historial de trabajos por cliente</li><li>Frecuencia de visitas</li><li>Servicios favoritos</li><li>Ventas y caja</li><li>Rendimiento por servicio/profesional</li><li>Stock simple de productos vendidos por unidad</li></ul><a [href]="whatsappSalon" target="_blank">Quiero conocer mejor a mis clientes →</a></div><div class="visual client"><div class="avatar">EV</div><b>Cliente frecuente</b><small>Última visita: hace 18 días</small><div><span>Manicure</span><strong>6 visitas</strong></div><div><span>Tinte</span><strong>4 visitas</strong></div><div class="suggest">💡 Momento ideal para volver a contactar</div></div></article></section>
+    <section class="cta"><span class="eyebrow">SALONES DE BELLEZA</span><h2>Convierte visitas en relaciones más ordenadas</h2><p>Usa el historial para dar continuidad al servicio y tener mejor información del negocio.</p><a class="btn primary big" [href]="whatsappSalon" target="_blank">Enviar diagnóstico →</a></section>
+  </ng-container>
+</main>
+
+<footer><a class="brand" href="#/inicio"><span>AGNE</span><small>Agilidad para Negocios</small></a><p>Soluciones de gestión para restaurantes, ferreterías, bodegas, minimarkets y salones de belleza en Perú.</p><p>© 2026 AGNE</p></footer>
+<a class="wa-float" [href]="wa('Hola AGNE, quisiera información para mi negocio.')" target="_blank" rel="noopener" aria-label="Escribir a AGNE por WhatsApp"><span>☎</span><b>WhatsApp</b></a>
