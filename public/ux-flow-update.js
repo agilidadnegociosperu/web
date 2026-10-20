@@ -3,7 +3,13 @@
   style.textContent = `
     /* Semáforo: centrado, ancho completo y color acorde al nivel */
     #calculadora .agne-inline-urgency {
-      width: auto;
+      width: calc(100% + 48px);
+      max-width: none;
+      margin-left: -24px;
+      margin-right: -24px;
+      box-sizing: border-box;
+      align-self: stretch;
+      flex: 0 0 auto;
       text-align: center;
       border-top: 3px solid var(--urgency);
       transition: background .2s ease, border-color .2s ease;
@@ -156,6 +162,11 @@
     }
 
     @media (max-width:560px) {
+      #calculadora .agne-inline-urgency {
+        width: calc(100% + 36px);
+        margin-left: -18px;
+        margin-right: -18px;
+      }
       #calculadora .agne-inline-urgency-title > small { font-size:10px; }
       #calculadora .agne-inline-status .urgency-emoji { font-size:34px; }
       #calculadora .agne-inline-status .urgency-label { font-size:36px; }
