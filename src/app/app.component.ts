@@ -109,6 +109,15 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
+  get nivelUrgenciaEmoji() {
+    switch (this.nivelUrgencia) {
+      case 'controlable': return '🙂';
+      case 'atencion': return '😕';
+      case 'alto': return '😟';
+      default: return '😣';
+    }
+  }
+
   get mensajeUrgencia() {
     switch (this.nivelUrgencia) {
       case 'controlable':
@@ -120,15 +129,6 @@ export class AppComponent implements AfterViewInit {
       default:
         return 'La fuga estimada ya supera un nivel crítico. Cada semana que pasa puede seguir acumulando dinero que el negocio ya generó.';
     }
-  }
-
-  get diasEquivalentePlanFull() {
-    if (this.perdidaDiaria <= 0) return 0;
-    return Math.max(1, Math.ceil(this.precioPlanFull / this.perdidaDiaria));
-  }
-
-  get mensualidadesEquivalentes() {
-    return Math.max(0, Math.round(this.perdidaMensual / this.precioArrendamiento));
   }
 
   private get tasasActuales() {
@@ -218,22 +218,31 @@ export class AppComponent implements AfterViewInit {
     block.innerHTML = `
       <section class="urgency-panel" aria-live="polite">
         <div class="urgency-heading">
-          <div>
-            <small>NIVEL DE FUGA ESTIMADA</small>
-            <strong class="urgency-label">CRÍTICO</strong>
+          <small>NIVEL DE FUGA ESTIMADA</small>
+          <div class="urgency-status">
+            <span class="urgency-emoji" aria-hidden="true">😟</span>
+            <strong class="urgency-label">ALTO</strong>
           </div>
-          <span class="urgency-dot" aria-hidden="true"></span>
         </div>
-        <div class="urgency-scale" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-          <i class="urgency-marker"></i>
+
+        <div class="urgency-meter" aria-label="Medidor del nivel de fuga estimada">
+          <div class="urgency-pointer" aria-hidden="true">
+            <span>TU NIVEL</span>
+            <b>▼</b>
+          </div>
+          <div class="urgency-scale" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="urgency-scale-labels" aria-hidden="true">
+            <span>CONTROLABLE</span>
+            <span>ATENCIÓN</span>
+            <span>ALTO</span>
+            <span>CRÍTICO</span>
+          </div>
         </div>
+
         <p class="urgency-copy"></p>
-        <div class="urgency-comparison">
-          <strong class="full-equivalent"></strong>
-          <span class="rent-equivalent"></span>
-        </div>
-        <small class="urgency-note">Comparación referencial basada en el resultado de esta calculadora; no constituye una auditoría financiera.</small>
+        <small class="urgency-note">Estimación referencial basada en los datos ingresados; no constituye una auditoría financiera.</small>
       </section>
 
       <section id="planes" class="plans-section">
@@ -275,24 +284,16 @@ export class AppComponent implements AfterViewInit {
 
     const panel = block.querySelector<HTMLElement>('.urgency-panel');
     const label = block.querySelector<HTMLElement>('.urgency-label');
+    const emoji = block.querySelector<HTMLElement>('.urgency-emoji');
     const copy = block.querySelector<HTMLElement>('.urgency-copy');
-    const fullEquivalent = block.querySelector<HTMLElement>('.full-equivalent');
-    const rentEquivalent = block.querySelector<HTMLElement>('.rent-equivalent');
 
-    if (!panel || !label || !copy || !fullEquivalent || !rentEquivalent) return;
+    if (!panel || !label || !emoji || !copy) return;
 
     panel.classList.remove('urgency-controlable', 'urgency-atencion', 'urgency-alto', 'urgency-critico');
     panel.classList.add(`urgency-${this.nivelUrgencia}`);
     label.textContent = this.nivelUrgenciaLabel;
+    emoji.textContent = this.nivelUrgenciaEmoji;
     copy.textContent = this.mensajeUrgencia;
-
-    fullEquivalent.textContent = this.diasEquivalentePlanFull > 0
-      ? `A este ritmo estimado, en ${this.diasEquivalentePlanFull} días la fuga podría equivaler a S/ 2,500.`
-      : 'Revisa tu operación antes de que la fuga aumente.';
-
-    rentEquivalent.textContent = this.mensualidadesEquivalentes > 0
-      ? `La fuga mensual estimada equivale a unas ${this.mensualidadesEquivalentes} mensualidades de S/ 100.`
-      : 'El plan mensual permite empezar con S/ 100 al mes.';
   }
 
   ngAfterViewInit() {
@@ -353,6 +354,117 @@ export class AppComponent implements AfterViewInit {
         outline-offset: 2px;
         z-index: 2;
       }
+
+      .urgency-panel {
+        padding: 30px 30px 24px;
+      }
+      .urgency-heading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+      }
+      .urgency-heading > small {
+        font-size: 12px;
+        letter-spacing: 1.8px;
+      }
+      .urgency-heading .urgency-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+      .urgency-emoji {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(38px, 4.2vw, 56px);
+        line-height: 1;
+        filter: drop-shadow(0 5px 8px rgba(0,0,0,.08));
+      }
+      .urgency-label {
+        font-size: clamp(42px, 5.8vw, 68px);
+        letter-spacing: -2px;
+        text-align: center;
+      }
+      .urgency-meter {
+        position: relative;
+        padding-top: 58px;
+        margin: 12px 0 24px;
+      }
+      .urgency-scale {
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+      }
+      .urgency-scale > span {
+        height: 16px;
+      }
+      .urgency-pointer {
+        position: absolute;
+        top: 0;
+        left: 12.5%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 5;
+        transition: left .25s ease;
+      }
+      .urgency-pointer span {
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #00233f;
+        color: #fff;
+        font-size: 10px;
+        line-height: 1;
+        font-weight: 950;
+        letter-spacing: 1px;
+        box-shadow: 0 7px 18px rgba(0,35,63,.18);
+        white-space: nowrap;
+      }
+      .urgency-pointer b {
+        display: block;
+        margin-top: 2px;
+        color: var(--urgency);
+        font-size: 32px;
+        line-height: .8;
+        text-shadow: 0 3px 8px color-mix(in srgb,var(--urgency) 28%,transparent);
+        animation: urgencyPointerPulse 1.5s ease-in-out infinite;
+      }
+      .urgency-atencion .urgency-pointer { left: 37.5%; }
+      .urgency-alto .urgency-pointer { left: 62.5%; }
+      .urgency-critico .urgency-pointer { left: 87.5%; }
+      .urgency-scale-labels {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+        margin-top: 9px;
+        color: #6d7f8b;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: .45px;
+        text-align: center;
+      }
+      .urgency-copy {
+        max-width: 920px;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.55;
+      }
+      .urgency-note {
+        margin-top: 15px;
+        text-align: center;
+      }
+      @keyframes urgencyPointerPulse {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(5px); }
+      }
+
       #giros > div > a {
         position: relative;
         overflow: hidden;
@@ -391,7 +503,21 @@ export class AppComponent implements AfterViewInit {
         48% { transform: translateY(-7px) rotateY(180deg) scale(1.08); }
         100% { transform: translateY(-7px) rotateY(360deg) scale(1.03); }
       }
+      @media (max-width: 560px) {
+        .urgency-panel { padding: 24px 16px 20px; }
+        .urgency-heading .urgency-status { gap: 8px; }
+        .urgency-emoji { font-size: 38px; }
+        .urgency-label { font-size: 44px; }
+        .urgency-meter { padding-top: 54px; margin-top: 8px; }
+        .urgency-scale { gap: 4px; }
+        .urgency-scale > span { height: 14px; }
+        .urgency-pointer span { font-size: 9px; padding: 6px 8px; }
+        .urgency-pointer b { font-size: 28px; }
+        .urgency-scale-labels { gap: 3px; font-size: 8px; letter-spacing: 0; }
+        .urgency-copy { font-size: 16px; }
+      }
       @media (prefers-reduced-motion: reduce) {
+        .urgency-pointer b { animation: none; }
         #giros > div > a, #giros > div > a span { transition: none; }
         #giros > div > a.is-spinning { animation: none; }
       }
