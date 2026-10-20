@@ -179,7 +179,7 @@
       setTextIfChanged(source.querySelector('.urgency-emoji'), urgency.emoji);
       setTextIfChanged(source.querySelector('.urgency-copy'), urgency.copy);
 
-      const noteText = 'Estimación referencial basada en los datos ingresados; no constituye un análisis financiero real.';
+      const noteText = 'Estimación referencial basada en los datos ingresados; no constituye un análisis financiero.';
       setTextIfChanged(source.querySelector('.urgency-note'), noteText);
       const srcNote = noteText;
       const resultCopy = result.querySelector(':scope > p')?.textContent || '';
