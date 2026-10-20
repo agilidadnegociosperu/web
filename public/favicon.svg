@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="AGNE">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#001b31"/>
+      <stop offset="1" stop-color="#062b59"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#ffd21a"/>
+      <stop offset="0.55" stop-color="#ff9a0a"/>
+      <stop offset="1" stop-color="#ff4d00"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+  <g fill="url(#bar)">
+    <rect x="7" y="31" width="8" height="16" rx="4"/>
+    <path d="M6 51h13l-5.5 7H6z"/>
+    <rect x="19" y="25" width="8" height="22" rx="4"/>
+    <path d="M16 58h12c3 0 5-2 5-5v-6h-6c-4 0-8 4-11 11z"/>
+    <rect x="31" y="17" width="8" height="30" rx="4"/>
+    <path d="M28 58h12c4 0 6-3 6-7v-9h-7c-5 0-9 7-11 16z"/>
+    <rect x="45" y="8" width="9" height="39" rx="4.5"/>
+    <path d="M40 58h14c3 0 5-2 5-5V42h-8c-5 0-9 8-11 16z"/>
+  </g>
+</svg>
