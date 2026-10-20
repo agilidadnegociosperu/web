@@ -52,6 +52,30 @@
     }
   }, true);
 
+  // Valores iniciales de referencia para la calculadora de restaurantes.
+  // Se aplican una sola vez, cuando Angular ya creó también el campo de mesas.
+  const initializeCalculatorDefaults = () => {
+    const calculator = document.querySelector('#calculadora');
+    const form = calculator?.querySelector('.loss-form');
+    if (!(calculator instanceof HTMLElement) || !form || calculator.dataset.defaultsInitialized === 'true') return;
+
+    const inputs = Array.from(form.querySelectorAll('input[type="number"]'));
+    if (inputs.length < 3) return;
+
+    const defaults = [100, 2, 12];
+    inputs.slice(0, 3).forEach((input, index) => {
+      input.value = String(defaults[index]);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+
+    const manualButton = form.querySelector('.loss-command-options button:first-child');
+    if (manualButton instanceof HTMLButtonElement && !manualButton.classList.contains('active')) {
+      manualButton.click();
+    }
+
+    calculator.dataset.defaultsInitialized = 'true';
+  };
+
   const planStyle = document.createElement('style');
   planStyle.textContent = `
     .plan-card[data-plan-selectable="true"] {
@@ -152,7 +176,11 @@
   });
 
   enhancePlanCards();
+  initializeCalculatorDefaults();
 
-  const observer = new MutationObserver(() => enhancePlanCards());
+  const observer = new MutationObserver(() => {
+    enhancePlanCards();
+    initializeCalculatorDefaults();
+  });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 })();
