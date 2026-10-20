@@ -159,17 +159,53 @@ export class AppComponent implements AfterViewInit {
     const platosInput = inputs.item(0);
     const mozosInput = inputs.item(1);
 
-    if (platosInput) {
-      platosInput.min = '10';
-      platosInput.max = '2000';
-      platosInput.step = '10';
-    }
+    const setupStepper = (input: HTMLInputElement | null, min: number, max: number, step: number, label: string) => {
+      if (!input) return;
 
-    if (mozosInput) {
-      mozosInput.min = '1';
-      mozosInput.max = '100';
-      mozosInput.step = '1';
-    }
+      input.min = String(min);
+      input.max = String(max);
+      input.step = String(step);
+
+      if (input.parentElement?.querySelector('.number-stepper')) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'number-stepper';
+      input.parentNode?.insertBefore(wrapper, input);
+      wrapper.appendChild(input);
+
+      const controls = document.createElement('div');
+      controls.className = 'number-stepper-controls';
+
+      const up = document.createElement('button');
+      up.type = 'button';
+      up.className = 'number-stepper-btn';
+      up.textContent = '▲';
+      up.setAttribute('aria-label', `Aumentar ${label}`);
+      up.title = `Aumentar ${step}`;
+
+      const down = document.createElement('button');
+      down.type = 'button';
+      down.className = 'number-stepper-btn';
+      down.textContent = '▼';
+      down.setAttribute('aria-label', `Disminuir ${label}`);
+      down.title = `Disminuir ${step}`;
+
+      up.addEventListener('click', () => {
+        input.stepUp();
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      down.addEventListener('click', () => {
+        input.stepDown();
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      controls.append(up, down);
+      wrapper.appendChild(controls);
+    };
+
+    setupStepper(platosInput, 10, 2000, 10, 'cantidad de platos');
+    setupStepper(mozosInput, 1, 100, 1, 'cantidad de mozos');
   }
 
   private ensureConversionBlock() {
@@ -269,6 +305,54 @@ export class AppComponent implements AfterViewInit {
 
     const style = document.createElement('style');
     style.textContent = `
+      .number-stepper {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 52px;
+        width: 100%;
+        min-width: 0;
+      }
+      .number-stepper input[type="number"] {
+        min-width: 0;
+        border-radius: 10px 0 0 10px !important;
+        border-right: 0 !important;
+      }
+      .number-stepper-controls {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        height: 54px;
+      }
+      .number-stepper-btn {
+        appearance: none;
+        -webkit-appearance: none;
+        border: 1px solid rgba(255,255,255,.18);
+        background: #f57c00;
+        color: #fff;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        transition: background .16s ease, transform .08s ease;
+      }
+      .number-stepper-btn:first-child {
+        border-radius: 0 10px 0 0;
+        border-bottom: 0;
+      }
+      .number-stepper-btn:last-child {
+        border-radius: 0 0 10px 0;
+      }
+      .number-stepper-btn:hover { background: #dc6d00; }
+      .number-stepper-btn:active { transform: scale(.96); }
+      .number-stepper-btn:focus-visible {
+        outline: 3px solid rgba(245,124,0,.3);
+        outline-offset: 2px;
+        z-index: 2;
+      }
       #giros > div > a {
         position: relative;
         overflow: hidden;
