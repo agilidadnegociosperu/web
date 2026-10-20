@@ -176,14 +176,14 @@ export class AppComponent implements AfterViewInit {
 
   private get tasasActuales() {
     return this.tipoComanda === 'manual'
-      ? { pedidos: 0.018, cobros: 0.012, demoras: 0.025 }
-      : { pedidos: 0.006, cobros: 0.004, demoras: 0.012 };
+      ? { pedidos: 0.008, cobros: 0.005, demoras: 0.010 }
+      : { pedidos: 0.003, cobros: 0.002, demoras: 0.004 };
   }
 
   private calcularPerdidaMensual(tipo: TipoComanda) {
     const tasas = tipo === 'manual'
-      ? { pedidos: 0.018, cobros: 0.012, demoras: 0.025 }
-      : { pedidos: 0.006, cobros: 0.004, demoras: 0.012 };
+      ? { pedidos: 0.008, cobros: 0.005, demoras: 0.010 }
+      : { pedidos: 0.003, cobros: 0.002, demoras: 0.004 };
 
     const perdidaPorPlato =
       (tasas.pedidos * this.precioPromedio * 0.60) +
