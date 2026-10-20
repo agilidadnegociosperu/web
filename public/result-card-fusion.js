@@ -97,6 +97,62 @@
     if (element && element.textContent !== value) element.textContent = value;
   };
 
+  const getMonthlyLoss = (result) => {
+    const raw = result?.querySelector('.loss-money')?.textContent || '';
+    const digits = raw.replace(/[^0-9]/g, '');
+    return Number(digits || 0);
+  };
+
+  const getUrgency = (loss) => {
+    if (loss < 300) {
+      return {
+        className: 'urgency-controlable',
+        label: 'CONTROLABLE',
+        emoji: '🙂',
+        copy: 'La fuga estimada todavía es contenida, pero conviene corregirla antes de que empiece a crecer mes a mes.'
+      };
+    }
+    if (loss < 600) {
+      return {
+        className: 'urgency-atencion',
+        label: 'ATENCIÓN',
+        emoji: '😕',
+        copy: 'La fuga mensual ya merece atención. Corregirla ahora evita que se convierta en una pérdida mucho más costosa.'
+      };
+    }
+    if (loss < 1200) {
+      return {
+        className: 'urgency-alto',
+        label: 'ALTO',
+        emoji: '😟',
+        copy: 'La fuga estimada ya representa una cantidad importante cada mes. Seguir postergando la corrección hace que el dinero perdido se siga acumulando.'
+      };
+    }
+    return {
+      className: 'urgency-critico',
+      label: 'CRÍTICO',
+      emoji: '😣',
+      copy: 'La fuga estimada ya está en un nivel crítico. Cada semana que pasa puede seguir acumulando dinero que el negocio ya generó.'
+    };
+  };
+
+  const syncWhatsappLevel = (label) => {
+    document.querySelectorAll('a[href*="wa.me/"]').forEach((anchor) => {
+      try {
+        const url = new URL(anchor.href, window.location.href);
+        const text = url.searchParams.get('text');
+        if (!text || !text.includes('• Nivel:')) return;
+        const nextText = text.replace(/• Nivel: (CONTROLABLE|ATENCIÓN|ALTO|CRÍTICO)/, `• Nivel: ${label}`);
+        if (nextText !== text) {
+          url.searchParams.set('text', nextText);
+          anchor.href = url.toString();
+        }
+      } catch (_) {
+        // Si el enlace todavía no está completo, Angular lo actualizará en el siguiente ciclo.
+      }
+    });
+  };
+
   const sync = () => {
     if (syncing) return;
     syncing = true;
@@ -107,22 +163,29 @@
       if (!result || !source || !inline) return;
 
       const urgencyClasses = ['urgency-controlable','urgency-atencion','urgency-alto','urgency-critico'];
-      const activeClass = urgencyClasses.find(c => source.classList.contains(c));
-      urgencyClasses.forEach(c => inline.classList.toggle(c, c === activeClass));
+      const urgency = getUrgency(getMonthlyLoss(result));
 
-      const srcLabel = source.querySelector('.urgency-label')?.textContent || '';
-      const srcEmoji = source.querySelector('.urgency-emoji')?.textContent || '';
-      const srcCopy = source.querySelector('.urgency-copy')?.textContent || '';
+      urgencyClasses.forEach(c => {
+        source.classList.toggle(c, c === urgency.className);
+        inline.classList.toggle(c, c === urgency.className);
+      });
+
+      setTextIfChanged(source.querySelector('.urgency-label'), urgency.label);
+      setTextIfChanged(source.querySelector('.urgency-emoji'), urgency.emoji);
+      setTextIfChanged(source.querySelector('.urgency-copy'), urgency.copy);
+
       const srcNote = source.querySelector('.urgency-note')?.textContent || '';
       const resultCopy = result.querySelector(':scope > p')?.textContent || '';
 
-      setTextIfChanged(inline.querySelector('.urgency-label'), srcLabel);
-      setTextIfChanged(inline.querySelector('.urgency-emoji'), srcEmoji);
+      setTextIfChanged(inline.querySelector('.urgency-label'), urgency.label);
+      setTextIfChanged(inline.querySelector('.urgency-emoji'), urgency.emoji);
       setTextIfChanged(result.querySelector('.agne-result-title-row .agne-info-tooltip'), resultCopy);
 
       const urgencyTip = inline.querySelector('.agne-info-tooltip');
-      const urgencyHtml = `${srcCopy}${srcNote ? `<small>${srcNote}</small>` : ''}`;
+      const urgencyHtml = `${urgency.copy}${srcNote ? `<small>${srcNote}</small>` : ''}`;
       if (urgencyTip && urgencyTip.innerHTML !== urgencyHtml) urgencyTip.innerHTML = urgencyHtml;
+
+      syncWhatsappLevel(urgency.label);
     } finally {
       syncing = false;
     }
