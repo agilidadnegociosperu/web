@@ -8,6 +8,8 @@
       padding:24px;
       justify-content:flex-start;
       overflow:visible;
+      position:relative;
+      z-index:20;
     }
     #calculadora .loss-result:after{width:170px;height:170px;right:-70px;top:-75px}
     #calculadora .loss-result-kicker{font-size:11px;letter-spacing:1.55px}
@@ -18,13 +20,15 @@
     #calculadora .loss-disclaimer{display:none!important}
     #calculadora .conversion-block>.urgency-panel{display:none!important}
 
-    .agne-result-title-row,.agne-inline-urgency-title{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:4}
+    .agne-result-title-row,.agne-inline-urgency-title{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:100001}
     .agne-info-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+    .agne-info-wrap.open{z-index:2147483000}
     .agne-info-btn{appearance:none;width:26px;height:26px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:14px;font-weight:950;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:none;padding:0}
     .agne-info-btn:hover,.agne-info-btn:focus-visible{background:#f57c00;border-color:#f57c00;outline:none}
-    .agne-info-tooltip{position:absolute;right:0;top:34px;width:min(310px,calc(100vw - 64px));padding:13px 14px;border-radius:13px;background:#fff;color:#16334a;box-shadow:0 16px 38px rgba(0,0,0,.28);font-size:13px;line-height:1.45;font-weight:500;letter-spacing:0;text-align:left;opacity:0;visibility:hidden;transform:translateY(-5px);transition:.16s ease;z-index:60;pointer-events:none}
-    .agne-info-tooltip small{display:block;margin-top:8px;color:#687d89;font-size:11px;line-height:1.4}
+    .agne-info-tooltip{position:absolute;right:0;top:34px;width:min(340px,calc(100vw - 64px));padding:14px 16px;border-radius:13px;background:#fff;color:#16334a;box-shadow:0 18px 44px rgba(0,0,0,.34);font-size:14px;line-height:1.5;font-weight:500;letter-spacing:0;text-align:left;opacity:0;visibility:hidden;transform:translateY(-5px);transition:.16s ease;z-index:2147483640;pointer-events:none}
+    .agne-info-tooltip small{display:block;margin-top:9px;color:#536a78;font-size:14px;line-height:1.5;font-weight:500}
     .agne-info-wrap.open .agne-info-tooltip,.agne-info-wrap:focus-within .agne-info-tooltip{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+    #calculadora .loss-result:has(.agne-info-wrap.open),.agne-inline-urgency:has(.agne-info-wrap.open){z-index:2147482000!important;overflow:visible!important}
     @media(hover:hover){.agne-info-wrap:hover .agne-info-tooltip{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}}
 
     .agne-inline-urgency{--urgency:#2fb36f;margin:18px -24px -24px;padding:18px 20px 20px;border-radius:0 0 20px 20px;background:#fff;color:#00233f;border-top:1px solid rgba(255,255,255,.16);position:relative;z-index:3}
@@ -64,7 +68,8 @@
       .agne-inline-urgency .urgency-scale>span{height:11px}
       .agne-inline-urgency .urgency-scale-labels{font-size:7px;gap:2px;letter-spacing:0}
       .agne-info-btn{width:24px;height:24px;font-size:13px}
-      .agne-info-tooltip{position:fixed;left:18px;right:18px;top:auto;bottom:24px;width:auto;max-width:none;font-size:13px;z-index:9999}
+      .agne-info-tooltip{position:fixed;left:18px;right:18px;top:auto;bottom:24px;width:auto;max-width:none;font-size:14px;line-height:1.5;z-index:2147483640}
+      .agne-info-tooltip small{font-size:14px;line-height:1.5}
     }
   `;
   document.head.appendChild(style);
@@ -174,7 +179,9 @@
       setTextIfChanged(source.querySelector('.urgency-emoji'), urgency.emoji);
       setTextIfChanged(source.querySelector('.urgency-copy'), urgency.copy);
 
-      const srcNote = source.querySelector('.urgency-note')?.textContent || '';
+      const noteText = 'Estimación referencial basada en los datos ingresados; no constituye un análisis financiero real.';
+      setTextIfChanged(source.querySelector('.urgency-note'), noteText);
+      const srcNote = noteText;
       const resultCopy = result.querySelector(':scope > p')?.textContent || '';
 
       setTextIfChanged(inline.querySelector('.urgency-label'), urgency.label);
