@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://agne-peru.github.io/web/sitemap.xml
+Sitemap: https://agilidadnegociosperu.github.io/web/sitemap.xml
