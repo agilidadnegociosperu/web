@@ -23,14 +23,25 @@
   `;
   document.head.appendChild(style);
 
-  const updateWhatsappHref = (anchor, oldText, newText) => {
+  const enforceWhatsappPlan = (anchor, type) => {
     if (!anchor || !anchor.href) return;
     try {
       const url = new URL(anchor.href, window.location.href);
       const text = url.searchParams.get('text');
-      if (!text || !text.includes(oldText)) return;
-      url.searchParams.set('text', text.replace(oldText, newText));
-      anchor.href = url.toString();
+      if (!text) return;
+
+      let nextText = text;
+      if (type === 'full') {
+        nextText = nextText.replace(/Plan Full de S\/\s*[\d,.]+/g, 'Plan Full de S/ 2,499');
+      }
+      if (type === 'monthly') {
+        nextText = nextText.replace(/Plan Mensual de S\/\s*[\d,.]+/g, 'Plan Mensual de S/ 199');
+      }
+
+      if (nextText !== text) {
+        url.searchParams.set('text', nextText);
+        anchor.href = url.toString();
+      }
     } catch (_) {}
   };
 
@@ -65,8 +76,8 @@
     const noteText = 'El equipamiento se define según compatibilidad y necesidad. Aprovechamos equipos existentes cuando sea técnicamente viable.';
     if (note && note.textContent !== noteText) note.textContent = noteText;
 
-    updateWhatsappHref(fullCta, 'Plan Full de S/ 2,500', 'Plan Full de S/ 2,499');
-    updateWhatsappHref(monthlyCta, 'Plan Mensual de S/ 100', 'Plan Mensual de S/ 199');
+    enforceWhatsappPlan(fullCta, 'full');
+    enforceWhatsappPlan(monthlyCta, 'monthly');
     return true;
   };
 
@@ -83,16 +94,21 @@
     boot();
   }
 
-  document.addEventListener('input', (event) => {
+  const scheduleSync = (event) => {
     if (event.target && event.target.closest && event.target.closest('#calculadora')) {
       window.setTimeout(syncPlans, 0);
     }
-  });
+  };
+  document.addEventListener('input', scheduleSync, true);
+  document.addEventListener('change', scheduleSync, true);
 
-  document.addEventListener('click', (event) => {
+  const forceClickedPlan = (event) => {
     const anchor = event.target && event.target.closest ? event.target.closest('.plan-card .plan-cta') : null;
     if (!anchor) return;
-    if (anchor.closest('.plan-full')) updateWhatsappHref(anchor, 'Plan Full de S/ 2,500', 'Plan Full de S/ 2,499');
-    if (anchor.closest('.plan-rent')) updateWhatsappHref(anchor, 'Plan Mensual de S/ 100', 'Plan Mensual de S/ 199');
-  }, true);
+    if (anchor.closest('.plan-full')) enforceWhatsappPlan(anchor, 'full');
+    if (anchor.closest('.plan-rent')) enforceWhatsappPlan(anchor, 'monthly');
+  };
+
+  document.addEventListener('pointerdown', forceClickedPlan, true);
+  document.addEventListener('click', forceClickedPlan, true);
 })();
