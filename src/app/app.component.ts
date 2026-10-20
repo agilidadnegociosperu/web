@@ -17,7 +17,7 @@ export class AppComponent implements AfterViewInit {
   platosDia = 100;
   mozos = 4;
   tipoComanda: TipoComanda = 'manual';
-  readonly precioPromedio = 30;
+  readonly precioPromedio = 25;
   readonly precioPlanFull = 2500;
   readonly precioArrendamiento = 100;
 
