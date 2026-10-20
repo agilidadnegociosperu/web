@@ -1,4 +1,8 @@
 (() => {
+  const CONSERVATIVE_FACTOR = 0.5;
+  const estimateSelectors = ['.loss-money', '.loss-year', '.loss-recovery strong'];
+  const lastRenderedEstimate = new WeakMap();
+
   const getConfig = (target) => {
     if (!(target instanceof HTMLInputElement) || target.type !== 'number') return null;
 
@@ -10,14 +14,23 @@
 
     if (index === 0) return { min: 10, max: 2000 };
     if (index === 1) return { min: 1, max: 100 };
+    if (index === 2) return { min: 1, max: 500 };
     return null;
   };
 
+  const resetEstimateTracking = () => {
+    estimateSelectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((element) => lastRenderedEstimate.delete(element));
+    });
+  };
+
   // Angular valida estos campos en cada evento input. Durante la escritura de un
-  // número de varias cifras (por ejemplo 150), el primer dígito puede quedar
-  // temporalmente por debajo del mínimo. Evitamos que ese estado intermedio
-  // llegue al validador para que el usuario pueda terminar de escribir.
+  // número de varias cifras, el campo puede quedar temporalmente vacío o por debajo
+  // del mínimo. Evitamos que ese estado intermedio llegue al validador para que el
+  // usuario pueda terminar de escribir sin que el valor vuelva automáticamente a 1.
   document.addEventListener('input', (event) => {
+    resetEstimateTracking();
+
     const input = event.target;
     const config = getConfig(input);
     if (!config) return;
@@ -31,6 +44,14 @@
     const value = Number(rawValue);
     if (!Number.isFinite(value) || value < config.min) {
       event.stopPropagation();
+    }
+  }, true);
+
+  // Los botones de comandas también recalculan sin disparar un evento input.
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target instanceof Element && target.closest('#calculadora .loss-command-options button')) {
+      resetEstimateTracking();
     }
   }, true);
 
@@ -50,6 +71,77 @@
       input.dispatchEvent(new Event('input', { bubbles: true }));
     }
   }, true);
+
+  const readFirstNumber = (text) => {
+    const match = String(text || '').match(/\d[\d.,]*/);
+    if (!match) return null;
+    const value = Number(match[0].replace(/\D/g, ''));
+    return Number.isFinite(value) ? value : null;
+  };
+
+  const replaceFirstNumber = (text, value) => {
+    const match = String(text || '').match(/\d[\d.,]*/);
+    if (!match || match.index == null) return text;
+    const formatted = Math.round(value).toLocaleString('es-PE');
+    return `${text.slice(0, match.index)}${formatted}${text.slice(match.index + match[0].length)}`;
+  };
+
+  const setUrgencyFromConservativeValue = (monthlyLoss) => {
+    const panel = document.querySelector('.urgency-panel');
+    const label = panel?.querySelector('.urgency-label');
+    const emoji = panel?.querySelector('.urgency-emoji');
+    const copy = panel?.querySelector('.urgency-copy');
+    if (!panel || !label || !emoji || !copy || !Number.isFinite(monthlyLoss)) return;
+
+    let level = 'controlable';
+    let labelText = 'CONTROLABLE';
+    let emojiText = '🙂';
+    let copyText = 'La fuga estimada todavía es contenida, pero dejarla crecer mes a mes termina convirtiéndola en una pérdida importante.';
+
+    if (monthlyLoss >= 2500) {
+      level = 'critico';
+      labelText = 'CRÍTICO';
+      emojiText = '😣';
+      copyText = 'La fuga estimada ya supera un nivel crítico. Cada semana que pasa puede seguir acumulando dinero que el negocio ya generó.';
+    } else if (monthlyLoss >= 1200) {
+      level = 'alto';
+      labelText = 'ALTO';
+      emojiText = '😟';
+      copyText = 'La fuga estimada ya representa una cantidad importante cada mes. Corregir la operación ahora evita seguir acumulándola.';
+    } else if (monthlyLoss >= 500) {
+      level = 'atencion';
+      labelText = 'ATENCIÓN';
+      emojiText = '😕';
+      copyText = 'Ya hay suficiente dinero escapándose como para revisar la operación antes de que el problema siga creciendo.';
+    }
+
+    panel.classList.remove('urgency-controlable', 'urgency-atencion', 'urgency-alto', 'urgency-critico');
+    panel.classList.add(`urgency-${level}`);
+    label.textContent = labelText;
+    emoji.textContent = emojiText;
+    copy.textContent = copyText;
+  };
+
+  // La calculadora usa una estimación deliberadamente conservadora. Mostramos el
+  // 50% del cálculo base para no prometer al cliente una recuperación exagerada.
+  const applyConservativeEstimate = () => {
+    estimateSelectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((element) => {
+        const current = element.textContent || '';
+        if (lastRenderedEstimate.get(element) === current) return;
+
+        const rawValue = readFirstNumber(current);
+        if (rawValue == null) return;
+
+        const rendered = replaceFirstNumber(current, rawValue * CONSERVATIVE_FACTOR);
+        lastRenderedEstimate.set(element, rendered);
+        if (current !== rendered) element.textContent = rendered;
+      });
+    });
+
+    const monthly = readFirstNumber(document.querySelector('.loss-money')?.textContent || '');
+    if (monthly != null) setUrgencyFromConservativeValue(monthly);
+  };
 
   const planStyle = document.createElement('style');
   planStyle.textContent = `
@@ -151,7 +243,11 @@
   });
 
   enhancePlanCards();
+  applyConservativeEstimate();
 
-  const observer = new MutationObserver(() => enhancePlanCards());
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  const observer = new MutationObserver(() => {
+    enhancePlanCards();
+    applyConservativeEstimate();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
 })();
