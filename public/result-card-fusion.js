@@ -93,6 +93,10 @@
   document.addEventListener('click', closeInfos);
   document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeInfos(); });
 
+  const setTextIfChanged = (element, value) => {
+    if (element && element.textContent !== value) element.textContent = value;
+  };
+
   const sync = () => {
     if (syncing) return;
     syncing = true;
@@ -102,8 +106,9 @@
       const inline = result?.querySelector('.agne-inline-urgency');
       if (!result || !source || !inline) return;
 
-      inline.classList.remove('urgency-controlable','urgency-atencion','urgency-alto','urgency-critico');
-      ['urgency-controlable','urgency-atencion','urgency-alto','urgency-critico'].forEach(c => { if (source.classList.contains(c)) inline.classList.add(c); });
+      const urgencyClasses = ['urgency-controlable','urgency-atencion','urgency-alto','urgency-critico'];
+      const activeClass = urgencyClasses.find(c => source.classList.contains(c));
+      urgencyClasses.forEach(c => inline.classList.toggle(c, c === activeClass));
 
       const srcLabel = source.querySelector('.urgency-label')?.textContent || '';
       const srcEmoji = source.querySelector('.urgency-emoji')?.textContent || '';
@@ -111,16 +116,13 @@
       const srcNote = source.querySelector('.urgency-note')?.textContent || '';
       const resultCopy = result.querySelector(':scope > p')?.textContent || '';
 
-      const label = inline.querySelector('.urgency-label');
-      const emoji = inline.querySelector('.urgency-emoji');
-      if (label) label.textContent = srcLabel;
-      if (emoji) emoji.textContent = srcEmoji;
-
-      const resultTip = result.querySelector('.agne-result-title-row .agne-info-tooltip');
-      if (resultTip) resultTip.textContent = resultCopy;
+      setTextIfChanged(inline.querySelector('.urgency-label'), srcLabel);
+      setTextIfChanged(inline.querySelector('.urgency-emoji'), srcEmoji);
+      setTextIfChanged(result.querySelector('.agne-result-title-row .agne-info-tooltip'), resultCopy);
 
       const urgencyTip = inline.querySelector('.agne-info-tooltip');
-      if (urgencyTip) urgencyTip.innerHTML = `${srcCopy}${srcNote ? `<small>${srcNote}</small>` : ''}`;
+      const urgencyHtml = `${srcCopy}${srcNote ? `<small>${srcNote}</small>` : ''}`;
+      if (urgencyTip && urgencyTip.innerHTML !== urgencyHtml) urgencyTip.innerHTML = urgencyHtml;
     } finally {
       syncing = false;
     }
@@ -165,12 +167,29 @@
     return true;
   };
 
-  const observer = new MutationObserver(() => {
-    if (!mounted) mount();
-    else sync();
+  // Solo observamos mientras Angular termina de construir la calculadora.
+  // Una vez montada la tarjeta, desconectamos el observer para evitar bucles.
+  const mountObserver = new MutationObserver(() => {
+    if (mount()) mountObserver.disconnect();
   });
-  observer.observe(document.documentElement, { childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['class'] });
+  mountObserver.observe(document.documentElement, { childList:true, subtree:true });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
-  else mount();
+  const scheduleSync = () => window.setTimeout(() => {
+    if (!mounted) mount();
+    sync();
+  }, 0);
+
+  // Los resultados cambian a partir de interacción del usuario; sincronizamos
+  // después de que Angular haya procesado el evento.
+  document.addEventListener('input', scheduleSync, true);
+  document.addEventListener('change', scheduleSync, true);
+  document.addEventListener('click', scheduleSync, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      if (mount()) mountObserver.disconnect();
+    }, { once:true });
+  } else if (mount()) {
+    mountObserver.disconnect();
+  }
 })();
