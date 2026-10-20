@@ -29,11 +29,11 @@
   // del mínimo. Evitamos que ese estado intermedio llegue al validador para que el
   // usuario pueda terminar de escribir sin que el valor vuelva automáticamente a 1.
   document.addEventListener('input', (event) => {
-    resetEstimateTracking();
-
     const input = event.target;
     const config = getConfig(input);
     if (!config) return;
+
+    resetEstimateTracking();
 
     const rawValue = input.value.trim();
     if (rawValue === '') {
@@ -86,6 +86,10 @@
     return `${text.slice(0, match.index)}${formatted}${text.slice(match.index + match[0].length)}`;
   };
 
+  const setTextIfChanged = (element, value) => {
+    if (element && element.textContent !== value) element.textContent = value;
+  };
+
   const setUrgencyFromConservativeValue = (monthlyLoss) => {
     const panel = document.querySelector('.urgency-panel');
     const label = panel?.querySelector('.urgency-label');
@@ -117,9 +121,9 @@
 
     panel.classList.remove('urgency-controlable', 'urgency-atencion', 'urgency-alto', 'urgency-critico');
     panel.classList.add(`urgency-${level}`);
-    label.textContent = labelText;
-    emoji.textContent = emojiText;
-    copy.textContent = copyText;
+    setTextIfChanged(label, labelText);
+    setTextIfChanged(emoji, emojiText);
+    setTextIfChanged(copy, copyText);
   };
 
   // La calculadora usa una estimación deliberadamente conservadora. Mostramos el
