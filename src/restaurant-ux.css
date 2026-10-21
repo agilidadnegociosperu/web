@@ -22,6 +22,10 @@
 .inline-urgency .urgency-pointer b{animation:levelArrowBounce 1s ease-in-out infinite}
 @keyframes levelArrowBounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(8px)}}
 
+/* Corrige el espacio lateral vacío dentro del resultado */
+#calculadora .loss-result{overflow:hidden!important}
+#calculadora .inline-urgency{width:calc(100% + 60px)!important;max-width:none!important;align-self:stretch!important;margin:20px -30px -30px!important}
+
 .requirements-disclosure{margin:26px max(7vw,28px) 64px;border:1px solid #dfe7e1;border-radius:20px;background:#fff;box-shadow:0 14px 38px rgba(0,35,63,.08);overflow:hidden}
 .requirements-disclosure>summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:center;padding:22px 26px;cursor:pointer;background:#fff;color:#00233f}
 .requirements-disclosure>summary::-webkit-details-marker{display:none}
@@ -32,14 +36,47 @@
 .requirements-disclosure[open]>summary b{background:#f57c00;color:#fff}
 .requirements-disclosure .requirements-panel{margin:0;border:0;border-radius:0;box-shadow:none}
 
+/* Planes Restaurante: Oro / Plata / Bronce */
+.restaurant-plans{padding-top:42px!important}
+.plans-grid-three{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-width:1180px!important;align-items:stretch}
+.restaurant-plan-card{min-height:520px!important;border-width:2px!important;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;cursor:pointer;overflow:visible}
+.restaurant-plan-card:hover{transform:translateY(-5px)}
+.restaurant-plan-card.selected-plan{transform:translateY(-9px) scale(1.012);animation:planSelectedPulse .85s ease-out both}
+@keyframes planSelectedPulse{0%{box-shadow:0 0 0 0 rgba(245,124,0,.32)}55%{box-shadow:0 0 0 15px rgba(245,124,0,.08)}100%{box-shadow:0 18px 44px rgba(0,35,63,.18)}}
+.plan-tier-head{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:38px;margin-bottom:8px}
+.plan-tier-name{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:950;letter-spacing:1.5px}
+.tier-coins{display:inline-flex;align-items:flex-end;height:28px;min-width:54px;position:relative}
+.tier-coins i{display:block;width:21px;height:21px;border-radius:50%;border:2px solid rgba(255,255,255,.65);box-shadow:inset 0 -3px 0 rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.16);margin-left:-7px}
+.tier-coins i:first-child{margin-left:0;transform:translateY(5px)}
+.tier-coins i:nth-child(2){transform:translateY(1px)}
+.tier-coins i:nth-child(3){transform:translateY(6px)}
+.tier-coins i:nth-child(4){transform:translateY(0)}
+.tier-coins i:nth-child(5){transform:translateY(4px)}
+.plan-tier-gold{border-color:#d6a624!important;background:linear-gradient(180deg,#fff8dc 0%,#fff 42%)!important;box-shadow:0 18px 42px rgba(193,145,14,.15)}
+.plan-tier-gold .plan-tier-name{color:#9b6d00}.plan-tier-gold .tier-coins i{background:linear-gradient(135deg,#ffe27a,#c99300)}.plan-tier-gold .plan-badge{background:#c8940b!important;color:#fff!important}.plan-tier-gold .plan-cta{background:#c8940b!important}
+.plan-tier-silver{border-color:#aeb7c2!important;background:linear-gradient(180deg,#f4f6f8 0%,#fff 42%)!important;box-shadow:0 18px 42px rgba(96,112,128,.12)}
+.plan-tier-silver .plan-tier-name{color:#677482}.plan-tier-silver .tier-coins i{background:linear-gradient(135deg,#f6f8fa,#9aa6b2)}.plan-tier-silver .plan-badge{background:#8d99a6!important;color:#fff!important}.plan-tier-silver .plan-cta{background:#687786!important}
+.plan-tier-bronze{border-color:#bb7444!important;background:linear-gradient(180deg,#fff3e8 0%,#fff 42%)!important;box-shadow:0 18px 42px rgba(156,88,43,.12)}
+.plan-tier-bronze .plan-tier-name{color:#9b542d}.plan-tier-bronze .tier-coins i{background:linear-gradient(135deg,#e1a06f,#9a4f25)}.plan-tier-bronze .plan-badge{background:#a85c32!important;color:#fff!important}.plan-tier-bronze .plan-cta{background:#a85c32!important}
+.plan-old-price{margin-top:12px;color:#84919a;font-size:14px;font-weight:800}.plan-old-price s{text-decoration-thickness:2px;text-decoration-color:#d65b4a}.restaurant-plan-card .plan-price{margin-top:5px}.restaurant-plan-card .plan-price strong{font-size:clamp(54px,5.5vw,76px)!important}.restaurant-plan-card>p:not(.plan-period){min-height:98px}.plans-terms{max-width:920px!important;margin-top:22px!important;font-size:12px!important;line-height:1.5}
+.plan-info summary{border:1px solid #cbd7dd!important;background:#fff!important;color:#27465b!important;box-shadow:0 2px 9px rgba(0,35,63,.08)}
+.plan-info-title{display:block;font-size:20px;line-height:1.2;color:#00233f;margin-bottom:14px}.plan-includes{display:grid;gap:10px;padding:0;margin:0;list-style:none}.plan-includes li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:9px;align-items:start;padding:8px 0;border-bottom:1px solid #edf1f3}.plan-includes li span{font-size:20px}.plan-includes li b{font-size:14px;line-height:1.4;color:#27465b}.plan-excludes,.plan-benefit-line{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;padding:9px 0}.plan-excludes span{color:#c84040;font-weight:950}.plan-benefit-line span{color:#168a6d;font-weight:950}.plan-excludes b,.plan-benefit-line b{font-size:14px;line-height:1.4;color:#27465b}
+
+@media(max-width:1050px){.plans-grid-three{grid-template-columns:1fr 1fr!important}.plan-tier-bronze{grid-column:1/-1;max-width:560px;width:100%;justify-self:center}}
 @media(max-width:560px){
   .calculator-intro-row{align-items:flex-start}
   .calculator-start-cue{width:100%;margin:16px 0 0}
   .info-pop>div{width:calc(100vw - 28px)!important;max-height:68vh;padding:17px 18px!important}
+  #calculadora .inline-urgency{width:calc(100% + 40px)!important;margin:16px -20px -20px!important}
   .requirements-disclosure{margin:20px 18px 44px}
   .requirements-disclosure>summary{grid-template-columns:1fr;padding:18px}
   .requirements-disclosure>summary span,.requirements-disclosure>summary strong,.requirements-disclosure>summary b{grid-column:1;grid-row:auto}
   .requirements-disclosure>summary b{justify-self:start;margin-top:5px}
+  .plans-grid-three{grid-template-columns:1fr!important}
+  .plan-tier-bronze{grid-column:auto;max-width:none}
+  .restaurant-plan-card{min-height:0!important;padding:24px!important}
+  .restaurant-plan-card>p:not(.plan-period){min-height:0}
+  .restaurant-plan-card .plan-price strong{font-size:62px!important}
 }
 
-@media(prefers-reduced-motion:reduce){.calculator-start-cue b,.inline-urgency .urgency-pointer b,.info-pop>div,.info-pop[open]::before{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.calculator-start-cue b,.inline-urgency .urgency-pointer b,.info-pop>div,.info-pop[open]::before,.restaurant-plan-card.selected-plan{animation:none!important}}
