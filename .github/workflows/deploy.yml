@@ -20,10 +20,10 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
-      - name: Prepare Pages artifact
+      - name: Prepare clean-route Pages artifact
         run: |
           touch dist/agne-web/browser/.nojekyll
-          cp dist/agne-web/browser/index.html dist/agne-web/browser/404.html
+          node scripts/prepare-pages.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
