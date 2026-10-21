@@ -71,7 +71,14 @@
     <section class="page-hero"><div><a class="page-back" href="#/inicio">← Todos los negocios</a><span class="eyebrow">RESTAURANTES · CEVICHERÍAS</span><h1>Ordena pedidos, cobros y operación.</h1><p>Calcula una fuga operativa estimada y revisa cómo digitalizar el flujo desde la mesa hasta el pago.</p></div><div class="page-hero-icon">🍽️</div></section>
 
     <section id="calculadora" class="loss-calculator">
-      <div class="loss-intro"><span class="eyebrow">CALCULADORA DE PÉRDIDAS · RESTAURANTES</span><h2>¿Cuánto dinero se está escapando de tu restaurante?</h2><p>Ingresa 4 datos y obtén una estimación rápida de cuánto podrías estar dejando de ganar cada mes por errores, cobros olvidados y ventas que no llegan a concretarse.</p><div class="loss-note">Estimación referencial basada en una venta promedio de S/ {{ precioPromedio }} por plato.</div></div>
+      <div class="loss-intro">
+        <div class="calculator-intro-row">
+          <span class="eyebrow">CALCULADORA DE PÉRDIDAS · RESTAURANTES</span>
+          <details class="info-pop info-pop-light"><summary aria-label="Cómo funciona esta estimación">i</summary><div>Ingresa 4 datos y obtén una estimación rápida de cuánto podrías estar dejando de ganar cada mes por errores, cobros olvidados y ventas que no llegan a concretarse.<small>Estimación referencial basada en una venta promedio de S/ {{ precioPromedio }} por plato.</small></div></details>
+        </div>
+        <h2>¿Cuánto dinero se está escapando de tu restaurante?</h2>
+        <div class="calculator-start-cue" aria-hidden="true"><span>EMPIEZA AQUÍ</span><b>↓</b></div>
+      </div>
       <div class="loss-layout">
         <div class="loss-form">
           <label><span>1. ¿Cuántos platos vendes al día?</span><div class="input-stepper"><input type="number" min="10" max="2000" step="10" [(ngModel)]="platosDia" (change)="normalizarRestaurante()"><div><button type="button" (click)="stepPlatos(10)">▲</button><button type="button" (click)="stepPlatos(-10)">▼</button></div></div></label>
@@ -82,18 +89,16 @@
         </div>
 
         <div class="loss-result">
-          <div class="result-heading"><span class="loss-result-kicker">PODRÍAS ESTAR DEJANDO DE GANAR</span><details class="info-pop"><summary>i</summary><div>La estimación usa los datos ingresados y supuestos operativos conservadores. Sirve como diagnóstico orientativo, no como análisis financiero.</div></details></div>
+          <div class="result-heading"><span class="loss-result-kicker">PODRÍAS ESTAR DEJANDO DE GANAR</span><details class="info-pop"><summary aria-label="Información sobre la estimación">i</summary><div>La estimación usa los datos ingresados y supuestos operativos conservadores. Sirve como diagnóstico orientativo, no como análisis financiero.</div></details></div>
           <strong class="loss-money">S/ {{ perdidaMensual | number:'1.0-0' }}</strong><span class="loss-period">al mes</span><div class="loss-year">≈ S/ {{ perdidaAnual | number:'1.0-0' }} al año</div>
           <div class="inline-urgency" [class]="'inline-urgency urgency-' + nivelUrgencia">
-            <div class="result-heading"><small>NIVEL DE FUGA ESTIMADA</small><details class="info-pop dark"><summary>i</summary><div>{{ mensajeUrgencia }}<small>Estimación referencial basada en los datos ingresados; no constituye un análisis financiero.</small></div></details></div>
+            <div class="result-heading"><small>NIVEL DE FUGA ESTIMADA</small><details class="info-pop dark"><summary aria-label="Información sobre tu nivel de fuga">i</summary><div>{{ mensajeUrgencia }}<small>Estimación referencial basada en los datos ingresados; no constituye un análisis financiero.</small></div></details></div>
             <div class="urgency-status"><span>{{ nivelUrgenciaEmoji }}</span><strong>{{ nivelUrgenciaLabel }}</strong></div>
             <div class="urgency-meter"><div class="urgency-pointer" [style.left]="urgencyPosition"><span>TU NIVEL</span><b>▼</b></div><div class="urgency-scale"><i></i><i></i><i></i><i></i></div><div class="urgency-scale-labels"><span>CONTROLABLE</span><span>ATENCIÓN</span><span>ALTO</span><span>CRÍTICO</span></div></div>
           </div>
           <div *ngIf="tipoComanda === 'manual'" class="loss-recovery"><small>Potencial de reducción estimado al ordenar y digitalizar mejor la operación</small><strong>hasta S/ {{ potencialRecuperable | number:'1.0-0' }} / mes</strong></div>
         </div>
       </div>
-
-      <section class="requirements-panel"><div class="requirements-heading"><span class="requirements-eyebrow">APROVECHEMOS LO QUE YA TIENES</span><h2>¿Con qué equipos cuentas actualmente?</h2><p>Marca lo que ya tienes. AGNE revisa compatibilidad antes de incluirlo en la implementación.</p></div><div class="requirements-grid"><label class="requirement-card" *ngFor="let equipo of equiposOpciones" [class.selected]="equipoSeleccionado(equipo.id)"><input type="checkbox" [checked]="equipoSeleccionado(equipo.id)" (change)="toggleEquipo(equipo.id, $any($event.target).checked)"><span class="requirement-check">✓</span><span class="requirement-icon">{{ equipo.icono }}</span><span class="requirement-copy"><strong>{{ equipo.etiqueta }}</strong><small>{{ equipo.detalle }}</small></span></label></div><div class="requirements-note">La selección no garantiza compatibilidad. Se revisan modelo, conexión y estado antes de considerar un equipo reutilizable.</div></section>
 
       <div class="loss-bottom"><p><strong>No siempre necesitas vender más.</strong> Primero evita perder parte de lo que ya estás generando.</p><a class="btn primary big" [href]="whatsappRestaurante" target="_blank">Quiero analizar mi operación →</a></div>
     </section>
@@ -106,6 +111,11 @@
       </div>
       <small class="plans-note">Precios aplicables a Restaurantes/Cevicherías. La compatibilidad y el hardware se revisan antes de cotizar.</small>
     </section>
+
+    <details class="requirements-disclosure">
+      <summary><span>OPCIONAL · APROVECHEMOS LO QUE YA TIENES</span><strong>¿Con qué equipos cuentas actualmente?</strong><b>Revisar equipamiento +</b></summary>
+      <section class="requirements-panel"><div class="requirements-heading"><p>Marca lo que ya tienes. AGNE revisa compatibilidad antes de incluirlo en la implementación.</p></div><div class="requirements-grid"><label class="requirement-card" *ngFor="let equipo of equiposOpciones" [class.selected]="equipoSeleccionado(equipo.id)"><input type="checkbox" [checked]="equipoSeleccionado(equipo.id)" (change)="toggleEquipo(equipo.id, $any($event.target).checked)"><span class="requirement-check">✓</span><span class="requirement-icon">{{ equipo.icono }}</span><span class="requirement-copy"><strong>{{ equipo.etiqueta }}</strong><small>{{ equipo.detalle }}</small></span></label></div><div class="requirements-note">La selección no garantiza compatibilidad. Se revisan modelo, conexión y estado antes de considerar un equipo reutilizable.</div></section>
+    </details>
 
     <section class="solutions restaurant-feature"><article class="business restaurant-business"><div class="biz-num">01</div><div><span class="tag">RESTAURANTES · CEVICHERÍAS</span><h3>De la mesa a cocina, sin perder el pedido.</h3><p>Reduce errores y controla cada venta desde que el mozo registra el pedido hasta que el cliente paga.</p><ul><li>Pedidos y comandas organizadas</li><li>Control de adicionales</li><li>Ventas y caja</li><li>Platos más vendidos</li><li>Reportes para tomar decisiones</li><li>Stock simple de bebidas y consumibles por unidad</li></ul><a [href]="whatsappRestaurante" target="_blank">Quiero ordenar mi restaurante →</a></div><div class="restaurant-order-photo"><img src="restaurantes/11_comandera2.png" width="900" height="760" loading="lazy" alt="Comandera para restaurante y cevichería"></div></article></section>
 
