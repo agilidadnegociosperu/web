@@ -38,8 +38,9 @@
   };
 
   const hashToRoute = () => {
+    if (!window.location.hash) return null;
     const slug = window.location.hash.replace(/^#\/?/, '').split(/[/?]/)[0].toLowerCase();
-    return ROUTES.has(slug) ? slug : (slug === '' ? 'inicio' : null);
+    return ROUTES.has(slug) ? slug : null;
   };
 
   const cleanUrl = route => route === 'inicio' ? BASE : `${BASE}${route}/`;
