@@ -6,6 +6,7 @@
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
+      .fer-approx-note{margin:0 0 2px;padding:10px 12px;border-radius:10px;background:#fff7ef;color:#7a4a20;font-size:12px;font-weight:800;line-height:1.4}
       .fer-agnescore{width:100%;display:grid;gap:18px;align-items:center;justify-items:center;padding:4px 0 8px}
       .fer-agnescore-head{text-align:center;display:grid;gap:5px}
       .fer-agnescore-head small{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#60706a}
@@ -61,11 +62,30 @@
   const describeCatalog = (points) => points >= 75 ? 'MUY ALTO' : points >= 60 ? 'ALTO' : points >= 35 ? 'MEDIO' : 'BAJO';
   const describeSales = (points) => points >= 16 ? 'ALTO' : points >= 10 ? 'MEDIO' : 'BAJO';
 
+  const ensureQuestionCopy = (section) => {
+    const form = section.querySelector('.diagnostic-form');
+    if (!form) return;
+
+    const labels = form.querySelectorAll('label>span');
+    if (labels[0]) labels[0].textContent = '1. ¿Cuántos productos diferentes manejas aproximadamente?';
+    if (labels[1]) labels[1].textContent = '2. ¿Cuántas ventas aproximado haces al día?';
+
+    let note = form.querySelector('.fer-approx-note');
+    if (!note) {
+      note = document.createElement('p');
+      note.className = 'fer-approx-note';
+      note.textContent = 'No necesitas cifras exactas: responde con valores aproximados.';
+      form.insertBefore(note, form.firstChild);
+    }
+  };
+
   const ensureWidget = () => {
     if (!location.hash.toLowerCase().includes('ferreter')) return null;
     const section = document.querySelector('.diagnostic-section');
     const result = section?.querySelector('.diagnostic-result');
     if (!section || !result) return null;
+
+    ensureQuestionCopy(section);
 
     let widget = result.querySelector('.fer-agnescore');
     if (!widget) {
