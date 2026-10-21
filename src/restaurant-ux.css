@@ -1,0 +1,45 @@
+/* Ajustes específicos para la experiencia de Restaurantes */
+#calculadora.loss-calculator,
+#calculadora .loss-result,
+#calculadora .inline-urgency{overflow:visible!important}
+
+.calculator-intro-row{display:flex;align-items:center;justify-content:space-between;gap:14px;max-width:920px;position:relative;z-index:20}
+.calculator-intro-row .eyebrow{margin-bottom:0}
+.calculator-start-cue{width:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;margin:20px 0 2px;color:#ffad63;font-size:10px;font-weight:950;letter-spacing:1.5px;text-align:center}
+.calculator-start-cue b{display:block;font-size:34px;line-height:.8;animation:calculatorGuide 1.05s ease-in-out infinite}
+@keyframes calculatorGuide{0%,100%{transform:translateY(-2px)}50%{transform:translateY(9px)}}
+
+.info-pop{position:relative;z-index:2147483600}
+.info-pop summary{list-style:none;width:30px!important;height:30px!important;min-width:30px;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;border-radius:50%;font-family:Georgia,"Times New Roman",serif!important;font-size:17px!important;font-style:italic!important;font-weight:700!important;line-height:1!important;letter-spacing:0!important;cursor:pointer;user-select:none}
+.info-pop summary::-webkit-details-marker{display:none}
+.info-pop-light summary{border:1px solid rgba(255,255,255,.36)!important;background:rgba(255,255,255,.10)!important;color:#fff!important}
+.info-pop[open]::before{content:"";position:fixed;inset:0;background:rgba(0,19,38,.28);backdrop-filter:blur(1px);z-index:2147483600;pointer-events:none;animation:infoBackdropIn .18s ease-out both}
+.info-pop>div{position:fixed!important;left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:min(440px,calc(100vw - 36px))!important;max-height:min(70vh,520px);overflow:auto;padding:18px 20px!important;border-radius:16px!important;background:#fff!important;color:#16334a!important;box-shadow:0 24px 70px rgba(0,0,0,.38)!important;font-size:14px!important;line-height:1.58!important;font-weight:500!important;text-align:left!important;z-index:2147483640!important;transform:translate(-50%,-50%);animation:infoCardIn .2s cubic-bezier(.2,.8,.2,1) both}
+.info-pop>div small{display:block;margin-top:10px;font-size:14px!important;line-height:1.5;color:#536a78}
+@keyframes infoCardIn{from{opacity:0;transform:translate(-50%,-46%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes infoBackdropIn{from{opacity:0}to{opacity:1}}
+
+.inline-urgency .urgency-pointer b{animation:levelArrowBounce 1s ease-in-out infinite}
+@keyframes levelArrowBounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(8px)}}
+
+.requirements-disclosure{margin:26px max(7vw,28px) 64px;border:1px solid #dfe7e1;border-radius:20px;background:#fff;box-shadow:0 14px 38px rgba(0,35,63,.08);overflow:hidden}
+.requirements-disclosure>summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:center;padding:22px 26px;cursor:pointer;background:#fff;color:#00233f}
+.requirements-disclosure>summary::-webkit-details-marker{display:none}
+.requirements-disclosure>summary span{grid-column:1;color:#f57c00;font-size:10px;font-weight:950;letter-spacing:1.5px}
+.requirements-disclosure>summary strong{grid-column:1;font-size:clamp(21px,2.6vw,30px);letter-spacing:-.8px}
+.requirements-disclosure>summary b{grid-column:2;grid-row:1/3;align-self:center;padding:10px 13px;border-radius:999px;background:#f4f7f8;color:#26445a;font-size:12px;white-space:nowrap}
+.requirements-disclosure[open]>summary{border-bottom:1px solid #e5ecef;background:#fffaf4}
+.requirements-disclosure[open]>summary b{background:#f57c00;color:#fff}
+.requirements-disclosure .requirements-panel{margin:0;border:0;border-radius:0;box-shadow:none}
+
+@media(max-width:560px){
+  .calculator-intro-row{align-items:flex-start}
+  .calculator-start-cue{width:100%;margin:16px 0 0}
+  .info-pop>div{width:calc(100vw - 28px)!important;max-height:68vh;padding:17px 18px!important}
+  .requirements-disclosure{margin:20px 18px 44px}
+  .requirements-disclosure>summary{grid-template-columns:1fr;padding:18px}
+  .requirements-disclosure>summary span,.requirements-disclosure>summary strong,.requirements-disclosure>summary b{grid-column:1;grid-row:auto}
+  .requirements-disclosure>summary b{justify-self:start;margin-top:5px}
+}
+
+@media(prefers-reduced-motion:reduce){.calculator-start-cue b,.inline-urgency .urgency-pointer b,.info-pop>div,.info-pop[open]::before{animation:none!important}}
