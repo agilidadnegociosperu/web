@@ -63,16 +63,7 @@
       </div>
     </section>
 
-    <section class="plans-section home-plans">
-      <div class="plans-heading"><span>ELIGE CÓMO EMPEZAR</span><h2>Dos formas de implementar AGNE</h2><p>El hardware se define según tu negocio y lo que ya tengas disponible.</p></div>
-      <div class="plans-grid">
-        <article class="plan-card plan-full"><span class="plan-badge">PAGO ÚNICO · FULL</span><h3>Plan Full</h3><div class="plan-price"><small>S/</small><strong>{{ precioPlanFull | number:'1.0-0' }}</strong></div><p class="plan-period">pago único</p><p>Para quien prefiere realizar una sola inversión y empezar con la modalidad completa.</p><a class="plan-cta plan-cta-primary" [href]="wa('Hola AGNE, quiero información del Plan Full de S/ 2,500.')" target="_blank">Quiero el Plan Full →</a></article>
-        <article class="plan-card plan-rent"><span class="plan-badge">ARRENDAMIENTO MENSUAL</span><h3>Plan Mensual</h3><div class="plan-price"><small>S/</small><strong>{{ precioArrendamiento }}</strong></div><p class="plan-period">al mes</p><p>Para empezar con una inversión mensual menor y poner la operación en orden.</p><a class="plan-cta" [href]="wa('Hola AGNE, quiero información del Plan Mensual de S/ 100.')" target="_blank">Quiero empezar por S/ 100 →</a></article>
-      </div>
-      <small class="plans-note">La compatibilidad y el hardware se revisan antes de cotizar. Aprovechamos equipos existentes cuando es técnicamente viable.</small>
-    </section>
-
-    <section class="cta"><span class="eyebrow">AGNE · AGILIDAD PARA NEGOCIOS</span><h2>Empieza por elegir tu giro</h2><p>Entra a la página de tu negocio y completa el diagnóstico correspondiente.</p><a class="btn primary big" href="#/restaurantes">Ver negocios →</a></section>
+    <section class="cta"><span class="eyebrow">AGNE · AGILIDAD PARA NEGOCIOS</span><h2>Empieza por elegir tu giro</h2><p>Cada tipo de negocio tiene una implementación y una estructura comercial distinta. Entra a la página de tu negocio y completa el diagnóstico correspondiente.</p><a class="btn primary big" href="#/restaurantes">Ver negocios →</a></section>
   </ng-container>
 
   <!-- RESTAURANTES -->
@@ -105,6 +96,15 @@
       <section class="requirements-panel"><div class="requirements-heading"><span class="requirements-eyebrow">APROVECHEMOS LO QUE YA TIENES</span><h2>¿Con qué equipos cuentas actualmente?</h2><p>Marca lo que ya tienes. AGNE revisa compatibilidad antes de incluirlo en la implementación.</p></div><div class="requirements-grid"><label class="requirement-card" *ngFor="let equipo of equiposOpciones" [class.selected]="equipoSeleccionado(equipo.id)"><input type="checkbox" [checked]="equipoSeleccionado(equipo.id)" (change)="toggleEquipo(equipo.id, $any($event.target).checked)"><span class="requirement-check">✓</span><span class="requirement-icon">{{ equipo.icono }}</span><span class="requirement-copy"><strong>{{ equipo.etiqueta }}</strong><small>{{ equipo.detalle }}</small></span></label></div><div class="requirements-note">La selección no garantiza compatibilidad. Se revisan modelo, conexión y estado antes de considerar un equipo reutilizable.</div></section>
 
       <div class="loss-bottom"><p><strong>No siempre necesitas vender más.</strong> Primero evita perder parte de lo que ya estás generando.</p><a class="btn primary big" [href]="whatsappRestaurante" target="_blank">Quiero analizar mi operación →</a></div>
+    </section>
+
+    <section class="plans-section restaurant-plans">
+      <div class="plans-heading"><span>PLANES · RESTAURANTES</span><h2>Dos formas de implementar AGNE en tu restaurante</h2><p>Estos precios corresponden exclusivamente al giro de restaurantes. El hardware se define según tu operación y los equipos compatibles que ya tengas.</p></div>
+      <div class="plans-grid">
+        <article class="plan-card plan-full"><span class="plan-badge">PAGO ÚNICO · FULL</span><h3>Plan Full</h3><div class="plan-price"><small>S/</small><strong>{{ precioPlanFull | number:'1.0-0' }}</strong></div><p class="plan-period">pago único</p><p>Para restaurantes que prefieren realizar una sola inversión y empezar con la modalidad completa.</p><a class="plan-cta plan-cta-primary" [href]="wa('Hola AGNE, tengo un restaurante y quiero información del Plan Full de S/ 2,500.')" target="_blank">Quiero el Plan Full →</a></article>
+        <article class="plan-card plan-rent"><span class="plan-badge">ARRENDAMIENTO MENSUAL</span><h3>Plan Mensual</h3><div class="plan-price"><small>S/</small><strong>{{ precioArrendamiento }}</strong></div><p class="plan-period">al mes</p><p>Para restaurantes que quieren empezar con una inversión mensual menor y ordenar la operación desde ahora.</p><a class="plan-cta" [href]="wa('Hola AGNE, tengo un restaurante y quiero información del Plan Mensual de S/ 100.')" target="_blank">Quiero empezar por S/ 100 →</a></article>
+      </div>
+      <small class="plans-note">Precios aplicables a Restaurantes/Cevicherías. La compatibilidad y el hardware se revisan antes de cotizar.</small>
     </section>
 
     <section class="solutions restaurant-feature"><article class="business restaurant-business"><div class="biz-num">01</div><div><span class="tag">RESTAURANTES · CEVICHERÍAS</span><h3>De la mesa a cocina, sin perder el pedido.</h3><p>Reduce errores y controla cada venta desde que el mozo registra el pedido hasta que el cliente paga.</p><ul><li>Pedidos y comandas organizadas</li><li>Control de adicionales</li><li>Ventas y caja</li><li>Platos más vendidos</li><li>Reportes para tomar decisiones</li><li>Stock simple de bebidas y consumibles por unidad</li></ul><a [href]="whatsappRestaurante" target="_blank">Quiero ordenar mi restaurante →</a></div><div class="restaurant-order-photo"><img src="restaurantes/11_comandera2.png" width="900" height="760" loading="lazy" alt="Comandera para restaurante y cevichería"></div></article></section>
