@@ -62,6 +62,57 @@
 .plan-info summary{border:1px solid #cbd7dd!important;background:#fff!important;color:#27465b!important;box-shadow:0 2px 9px rgba(0,35,63,.08)}
 .plan-info-title{display:block;font-size:20px;line-height:1.2;color:#00233f;margin-bottom:14px}.plan-includes{display:grid;gap:10px;padding:0;margin:0;list-style:none}.plan-includes li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:9px;align-items:start;padding:8px 0;border-bottom:1px solid #edf1f3}.plan-includes li span{font-size:20px}.plan-includes li b{font-size:14px;line-height:1.4;color:#27465b}.plan-excludes,.plan-benefit-line{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;align-items:start;padding:9px 0}.plan-excludes span{color:#c84040;font-weight:950}.plan-benefit-line span{color:#168a6d;font-weight:950}.plan-excludes b,.plan-benefit-line b{font-size:14px;line-height:1.4;color:#27465b}
 
+/* Rediseño premium inspirado en la identidad visual de campaña AGNE */
+#calculadora.loss-calculator{position:relative;isolation:isolate;background:
+  radial-gradient(circle at 88% 12%,rgba(255,137,0,.22),transparent 24%),
+  radial-gradient(circle at 10% 86%,rgba(0,94,166,.24),transparent 28%),
+  linear-gradient(145deg,#00152a 0%,#00233f 52%,#00182d 100%)!important}
+#calculadora.loss-calculator::before,#calculadora.loss-calculator::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(8px);pointer-events:none}
+#calculadora.loss-calculator::before{width:190px;height:190px;right:5%;top:110px;background:rgba(255,123,0,.10)}
+#calculadora.loss-calculator::after{width:260px;height:260px;left:-90px;bottom:80px;background:rgba(0,108,181,.12)}
+#calculadora .calculator-intro-row .eyebrow{display:inline-flex;align-items:center;min-height:36px;padding:8px 15px;border-radius:999px;background:linear-gradient(90deg,#ffb000 0%,#ff7900 100%);color:#001b36!important;box-shadow:0 9px 24px rgba(255,121,0,.22);font-size:11px;font-weight:1000;letter-spacing:1.25px}
+#calculadora .loss-intro h2{max-width:980px;font-size:clamp(44px,6vw,78px)!important;line-height:.94!important;letter-spacing:-3.6px!important;text-wrap:balance;text-shadow:0 10px 34px rgba(0,0,0,.18)}
+#calculadora .calculator-start-cue{color:#ffbd45;font-size:11px}
+#calculadora .calculator-start-cue span{padding:7px 12px;border:1px solid rgba(255,188,69,.28);border-radius:999px;background:rgba(255,188,69,.08)}
+#calculadora .loss-layout{gap:28px!important;align-items:stretch}
+
+#calculadora .loss-form{position:relative;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%)!important;color:#00233f!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:26px!important;padding:26px!important;box-shadow:0 28px 70px rgba(0,8,20,.28),0 0 0 1px rgba(255,255,255,.32) inset!important;backdrop-filter:none!important}
+#calculadora .loss-form::before{content:"DATOS DE TU OPERACIÓN";display:block;margin:-4px 0 2px;color:#ff7900;font-size:10px;font-weight:1000;letter-spacing:1.55px}
+#calculadora .loss-form label,#calculadora .loss-command{gap:8px;padding:14px;border:1px solid #e2e9ee;border-radius:16px;background:#fff;box-shadow:0 8px 20px rgba(0,35,63,.055);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+#calculadora .loss-form label:focus-within,#calculadora .loss-command:has(.active){border-color:#ff9a2f;box-shadow:0 0 0 4px rgba(255,121,0,.10),0 12px 28px rgba(0,35,63,.08);transform:translateY(-1px)}
+#calculadora .loss-form label>span,#calculadora .loss-command>span{color:#16334a!important;font-size:14px!important;font-weight:900!important}
+#calculadora .input-stepper{border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px #dfe7ec}
+#calculadora .loss-form input{height:56px!important;border:0!important;background:#f8fafc!important;color:#001b36!important;font-size:21px!important;font-weight:950!important;box-shadow:none!important}
+#calculadora .input-stepper button{border-color:#ff9a2f!important;background:linear-gradient(180deg,#ff9e34 0%,#ff7900 100%)!important}
+#calculadora .loss-command-options{gap:9px}
+#calculadora .loss-command-options button{min-height:58px!important;border:1px solid #dce5ea!important;background:#f6f8fa!important;color:#26445a!important;border-radius:13px!important;font-weight:900!important;box-shadow:none!important}
+#calculadora .loss-command-options button:hover{border-color:#ff9a2f!important;background:#fff8f1!important}
+#calculadora .loss-command-options button.active{border-color:#ff7900!important;background:linear-gradient(180deg,#fff1de 0%,#ffe7cb 100%)!important;color:#a74400!important;box-shadow:0 0 0 3px rgba(255,121,0,.11)!important}
+#calculadora .loss-load{padding:15px 16px!important;border:1px solid #dfe7ec;border-radius:14px!important;background:linear-gradient(135deg,#edf5fa,#f8fbfd)!important;color:#607684!important}
+#calculadora .loss-load strong{color:#00233f!important}
+#calculadora .loss-load small{color:#6a7e89!important}
+
+#calculadora .loss-result{position:relative;background:linear-gradient(180deg,#ffffff 0%,#f8fafb 100%)!important;color:#00233f!important;border:1px solid rgba(255,255,255,.82)!important;border-radius:26px!important;padding:30px!important;box-shadow:0 30px 78px rgba(0,8,20,.30),0 0 0 1px rgba(255,255,255,.45) inset!important;backdrop-filter:none!important}
+#calculadora .loss-result::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:linear-gradient(90deg,#ffb100 0%,#ff7900 50%,#ff5400 100%)}
+#calculadora .loss-result::after{width:260px!important;height:260px!important;right:-120px!important;top:-120px!important;background:radial-gradient(circle,rgba(255,133,0,.16),rgba(255,133,0,0) 68%)!important}
+#calculadora .loss-result-kicker{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;background:#fff1df;color:#b74c00!important;font-size:10px!important;letter-spacing:1.45px!important}
+#calculadora .loss-money{font-size:clamp(62px,8vw,108px)!important;color:#e44b24!important;text-shadow:none!important;margin-top:16px!important}
+#calculadora .loss-period{color:#9c3d20!important;font-size:18px!important}
+#calculadora .loss-year{display:inline-flex;width:max-content;max-width:100%;margin-top:12px!important;padding:10px 13px;border-radius:12px;background:#fff4e8;color:#c55a11!important;font-size:17px!important}
+#calculadora .loss-result>p{color:#5a707d!important}
+#calculadora .loss-recovery{margin-top:18px!important;padding:16px 17px!important;border:1px solid #bee9dd!important;border-radius:15px!important;background:linear-gradient(135deg,#e9fbf4 0%,#f5fffb 100%)!important}
+#calculadora .loss-recovery small{color:#347966!important}
+#calculadora .loss-recovery strong{color:#08795f!important;font-size:24px!important}
+#calculadora .inline-urgency{background:#fff!important;color:#00233f!important;border-top:1px solid #e7edf0!important;box-shadow:0 -14px 34px rgba(0,35,63,.045)}
+#calculadora .urgency-status{margin-top:12px!important}
+#calculadora .urgency-status strong{font-weight:1000!important}
+#calculadora .urgency-scale i{height:14px!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.55)}
+
+#calculadora .loss-bottom{margin-top:30px!important;padding:20px 22px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(255,255,255,.07);backdrop-filter:blur(10px)}
+#calculadora .loss-bottom p{font-size:17px!important;color:#d5e0e7!important}
+#calculadora .loss-bottom .btn{min-height:56px;padding:14px 22px!important;border-radius:15px!important;background:linear-gradient(90deg,#ffb000 0%,#ff7900 58%,#ff5b00 100%)!important;color:#001b36!important;font-weight:1000!important;box-shadow:0 14px 30px rgba(255,121,0,.24);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+#calculadora .loss-bottom .btn:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(255,121,0,.30);filter:brightness(1.03)}
+
 @media(max-width:1050px){.plans-grid-three{grid-template-columns:1fr 1fr!important}.plan-tier-bronze{grid-column:1/-1;max-width:560px;width:100%;justify-self:center}}
 @media(max-width:560px){
   .calculator-intro-row{align-items:flex-start}
@@ -77,6 +128,19 @@
   .restaurant-plan-card{min-height:0!important;padding:24px!important}
   .restaurant-plan-card>p:not(.plan-period){min-height:0}
   .restaurant-plan-card .plan-price strong{font-size:62px!important}
+
+  #calculadora.loss-calculator{padding-top:42px!important}
+  #calculadora .calculator-intro-row{gap:10px}
+  #calculadora .calculator-intro-row .eyebrow{min-height:32px;padding:7px 11px;font-size:9px;letter-spacing:1px}
+  #calculadora .loss-intro h2{font-size:44px!important;letter-spacing:-2.4px!important;line-height:.96!important;margin-top:16px!important}
+  #calculadora .loss-layout{gap:18px!important;margin-top:24px!important}
+  #calculadora .loss-form,#calculadora .loss-result{padding:20px!important;border-radius:22px!important}
+  #calculadora .loss-form label,#calculadora .loss-command{padding:13px;border-radius:15px}
+  #calculadora .loss-form input{font-size:20px!important}
+  #calculadora .loss-money{font-size:64px!important;letter-spacing:-3px!important}
+  #calculadora .loss-year{font-size:15px!important}
+  #calculadora .loss-bottom{padding:18px!important;border-radius:18px}
+  #calculadora .loss-bottom .btn{width:100%;min-height:58px}
 }
 
 @media(prefers-reduced-motion:reduce){.calculator-start-cue b,.inline-urgency .urgency-pointer b,.info-pop>div,.info-pop[open]::before,.restaurant-plan-card.selected-plan{animation:none!important}}
