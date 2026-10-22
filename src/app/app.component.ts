@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
         description: 'Elige tu tipo de negocio y obtén un diagnóstico orientativo para restaurantes, ferreterías, bodegas, minimarkets y salones de belleza.'
       },
       restaurantes: {
-        title: 'Sistema y diagnóstico para restaurantes | AGNE',
+        title: '¿Cuánto pierde tu restaurante? | Agilidad de Negocios Perú',
         description: 'Calcula fugas operativas en restaurantes y cevicherías y conoce cómo ordenar pedidos, comandas, ventas y stock simple.'
       },
       ferreterias: {
@@ -137,7 +137,6 @@ export class AppComponent implements OnInit {
     this.mozos = this.clampValue(this.mozos, 1, 100);
     this.mesas = this.clampValue(this.mesas, 1, 500);
   }
-
   stepPlatos(delta: number) {
     this.platosDia = this.clampValue(this.platosDia + delta, 10, 2000);
   }
