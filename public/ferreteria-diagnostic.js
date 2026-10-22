@@ -7,6 +7,8 @@
     style.id = STYLE_ID;
     style.textContent = `
       .fer-approx-note{margin:0 0 2px;padding:10px 12px;border-radius:10px;background:#fff7ef;color:#7a4a20;font-size:12px;font-weight:800;line-height:1.4}
+      .fer-hero-image{width:100%;max-width:760px;margin:24px 0 0}
+      .fer-hero-image img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 18px 45px rgba(0,35,63,.12)}
       .fer-agnescore{width:100%;display:grid;gap:18px;align-items:center;justify-items:center;padding:4px 0 8px}
       .fer-agnescore-head{text-align:center;display:grid;gap:5px}
       .fer-agnescore-head small{font-size:10px;letter-spacing:1.5px;font-weight:950;color:#60706a}
@@ -28,7 +30,7 @@
       .diagnostic-result.fer-enhanced>.btn{margin-top:4px}
       .fer-ring.is-pulsing{animation:ferPulse .42s ease-out}
       @keyframes ferPulse{0%{transform:scale(.97)}55%{transform:scale(1.035)}100%{transform:scale(1)}}
-      @media(max-width:560px){.fer-agnescore-factors{grid-template-columns:1fr}.fer-ring{width:min(210px,68vw)}}
+      @media(max-width:560px){.fer-hero-image{margin-top:18px}.fer-hero-image img{border-radius:14px}.fer-agnescore-factors{grid-template-columns:1fr}.fer-ring{width:min(210px,68vw)}}
       @media(prefers-reduced-motion:reduce){.fer-ring{transition:none}.fer-ring.is-pulsing{animation:none}}
     `;
     document.head.appendChild(style);
@@ -85,6 +87,18 @@
     return /\/ferreterias\/?$/.test(path) || hash.includes('ferreter');
   };
 
+  const ensureHeroImage = () => {
+    if (!isFerreteriasRoute()) return;
+    const section = document.querySelector('.diagnostic-section');
+    const heroCopy = section?.previousElementSibling?.querySelector(':scope > div:first-child');
+    if (!section || !heroCopy || heroCopy.querySelector('.fer-hero-image')) return;
+
+    const figure = document.createElement('figure');
+    figure.className = 'fer-hero-image';
+    figure.innerHTML = '<img src="ferreterias/Dinero%20Dormido%20en%20la%20Ferreter%C3%ADa.png" alt="Productos de ferretería que representan dinero inmovilizado por baja rotación" loading="eager" decoding="async">';
+    heroCopy.appendChild(figure);
+  };
+
   const ensureWidget = () => {
     if (!isFerreteriasRoute()) return null;
     const section = document.querySelector('.diagnostic-section');
@@ -116,6 +130,7 @@
 
   const sync = () => {
     addStyles();
+    ensureHeroImage();
     const found = ensureWidget();
     if (!found) return;
     const { section, widget } = found;
