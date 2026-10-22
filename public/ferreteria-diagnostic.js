@@ -79,8 +79,14 @@
     }
   };
 
+  const isFerreteriasRoute = () => {
+    const path = location.pathname.toLowerCase();
+    const hash = location.hash.toLowerCase();
+    return /\/ferreterias\/?$/.test(path) || hash.includes('ferreter');
+  };
+
   const ensureWidget = () => {
-    if (!location.hash.toLowerCase().includes('ferreter')) return null;
+    if (!isFerreteriasRoute()) return null;
     const section = document.querySelector('.diagnostic-section');
     const result = section?.querySelector('.diagnostic-result');
     if (!section || !result) return null;
@@ -164,6 +170,7 @@
     if (event.target instanceof Element && event.target.closest('.diagnostic-section')) setTimeout(schedule, 0);
   }, true);
   window.addEventListener('hashchange', schedule);
+  window.addEventListener('popstate', schedule);
   document.addEventListener('DOMContentLoaded', schedule);
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
 })();
