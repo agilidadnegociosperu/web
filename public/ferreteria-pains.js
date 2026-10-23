@@ -6,35 +6,30 @@
     {
       number: '01',
       title: 'Dueño esclavo',
-      text: 'Si todo depende de ti —cotizar, responder, reponer, cobrar y resolver— el negocio termina consumiendo tu tiempo. La información debe ayudarte a delegar sin perder el control.',
       image: 'ferreterias/dueno-esclavo.webp',
       alt: 'Dueño de ferretería sobrecargado porque todo depende de él'
     },
     {
       number: '02',
       title: 'Stock desordenado',
-      text: 'Buscar productos entre cajas y estantes retrasa la atención. Un catálogo claro y un control básico por producto reducen la dependencia de la memoria.',
       image: 'ferreterias/stock-desordenado.webp',
       alt: 'Ferretería con stock desordenado y dificultad para encontrar productos'
     },
     {
       number: '03',
       title: 'Ventas perdidas',
-      text: 'Si no encuentras rápido lo que el cliente pide, la venta puede irse con él. Consultar mejor tu catálogo ayuda a responder con más rapidez y seguridad.',
       image: 'ferreterias/ventas-perdidas.webp',
       alt: 'Cliente retirándose de una ferretería porque no encontraron el producto'
     },
     {
       number: '04',
       title: 'Compras a ciegas',
-      text: 'Comprar por memoria puede llenar estantes con productos que rotan poco y dejarte corto en los que sí salen. Tus ventas deben ayudarte a decidir qué reponer.',
       image: 'ferreterias/compras-a-ciegas.webp',
       alt: 'Dueño de ferretería revisando compras sin saber qué productos rotan'
     },
     {
       number: '05',
       title: 'Dinero dormido',
-      text: 'Mercadería que pasa meses sin salir es capital inmovilizado. Detectar la baja rotación te ayuda a decidir qué dejar de comprar, mover o liquidar.',
       image: 'ferreterias/Dinero%20Dormido%20en%20la%20Ferreter%C3%ADa.png',
       alt: 'Producto de ferretería de baja rotación que representa dinero inmovilizado'
     }
@@ -60,16 +55,15 @@
       .fer-problems-head .eyebrow{display:block;margin-bottom:10px}
       .fer-problems-head h2{margin:0 0 12px;color:#00233f;font-size:clamp(36px,5vw,62px);line-height:1;letter-spacing:-2.5px}
       .fer-problems-head p{margin:0;color:#5f727d;font-size:17px;line-height:1.6}
-      .fer-problem{display:grid;grid-template-columns:minmax(170px,230px) minmax(0,1fr);gap:38px;align-items:center;margin:18px 0;padding:26px;border:1px solid #e4eaed;border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,35,63,.07)}
-      .fer-problem.is-reverse{grid-template-columns:minmax(0,1fr) minmax(170px,230px)}
+      .fer-problem{display:grid;grid-template-columns:minmax(170px,220px) minmax(0,1fr);gap:38px;align-items:center;margin:18px 0;padding:26px;border:1px solid #e4eaed;border-radius:24px;background:#fff;box-shadow:0 16px 42px rgba(0,35,63,.07)}
+      .fer-problem.is-reverse{grid-template-columns:minmax(0,1fr) minmax(170px,220px)}
       .fer-problem.is-reverse .fer-problem-media{order:2}
       .fer-problem.is-reverse .fer-problem-copy{order:1}
       .fer-problem-media{display:flex;justify-content:center}
-      .fer-problem-media img{display:block;width:100%;max-width:230px;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.12);background:#eef2f4}
-      .fer-problem-copy{max-width:720px}
+      .fer-problem-media img{display:block;width:100%;max-width:220px;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.12);background:#eef2f4}
+      .fer-problem-copy{max-width:720px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
       .fer-problem-number{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:29px;padding:0 10px;border-radius:999px;background:#00233f;color:#fff;font-size:11px;font-weight:950;letter-spacing:1.2px}
-      .fer-problem h3{margin:12px 0 10px;color:#00233f;font-size:clamp(30px,4vw,46px);line-height:1;letter-spacing:-1.8px}
-      .fer-problem p{margin:0;color:#526875;font-size:17px;line-height:1.65}
+      .fer-problem h3{margin:12px 0 0;color:#00233f;font-size:clamp(30px,4vw,46px);line-height:1;letter-spacing:-1.8px}
       .fer-problem:first-of-type{border-color:#f0b37d;background:linear-gradient(135deg,#fff9f2 0%,#fff 58%)}
       .fer-problem:first-of-type .fer-problem-number{background:#f57c00}
       @media(max-width:700px){
@@ -80,9 +74,8 @@
         .fer-problems-head p{font-size:15px}
         .fer-problem,.fer-problem.is-reverse{grid-template-columns:1fr;gap:20px;padding:18px;margin:14px 0;border-radius:20px}
         .fer-problem.is-reverse .fer-problem-media,.fer-problem.is-reverse .fer-problem-copy{order:initial}
-        .fer-problem-media img{max-width:260px}
+        .fer-problem-media img{max-width:220px}
         .fer-problem h3{font-size:32px;letter-spacing:-1.2px}
-        .fer-problem p{font-size:15px}
       }
     `;
     document.head.appendChild(style);
@@ -116,8 +109,8 @@
         </div>
         ${problems.map((problem, index) => `
           <article class="fer-problem${index % 2 ? ' is-reverse' : ''}">
-            <div class="fer-problem-media"><img src="${problem.image}" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async" alt="${problem.alt}"></div>
-            <div class="fer-problem-copy"><span class="fer-problem-number">${problem.number}</span><h3>${problem.title}</h3><p>${problem.text}</p></div>
+            <div class="fer-problem-media"><img src="${problem.image}" width="220" height="391" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async" alt="${problem.alt}"></div>
+            <div class="fer-problem-copy"><span class="fer-problem-number">${problem.number}</span><h3>${problem.title}</h3></div>
           </article>
         `).join('')}
       </div>
