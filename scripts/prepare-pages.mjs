@@ -35,11 +35,42 @@ function replaceMeta(html, route, data) {
     .replace(/<meta property="og:url" content="[^"]*">/i, `<meta property="og:url" content="${url}">`);
 }
 
+function materializeFerreteriaImages() {
+  const partsDir = path.resolve('public/ferreterias/.parts');
+  const outDir = path.join(root, 'ferreterias');
+  const images = [
+    ['dueno-esclavo', 'dueno-esclavo.webp'],
+    ['stock-desordenado', 'stock-desordenado.webp'],
+    ['ventas-perdidas', 'ventas-perdidas.webp'],
+    ['compras-a-ciegas', 'compras-a-ciegas.webp']
+  ];
+
+  fs.mkdirSync(outDir, { recursive: true });
+
+  for (const [prefix, output] of images) {
+    const chunks = fs.readdirSync(partsDir)
+      .filter(name => name.startsWith(`${prefix}.`) && name.endsWith('.b64'))
+      .sort();
+
+    if (!chunks.length) throw new Error(`No se encontraron partes para ${prefix}`);
+
+    const base64 = chunks
+      .map(name => fs.readFileSync(path.join(partsDir, name), 'utf8').trim())
+      .join('');
+
+    fs.writeFileSync(path.join(outDir, output), Buffer.from(base64, 'base64'));
+  }
+
+  fs.rmSync(path.join(outDir, '.parts'), { recursive: true, force: true });
+}
+
 for (const [route, data] of Object.entries(routes)) {
   const dir = path.join(root, route);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), replaceMeta(source, route, data));
 }
 
+materializeFerreteriaImages();
 fs.copyFileSync(indexPath, path.join(root, '404.html'));
 console.log('Prepared clean-route entry points:', Object.keys(routes).join(', '));
+console.log('Prepared optimized ferreteria problem images.');
