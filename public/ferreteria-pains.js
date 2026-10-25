@@ -4,31 +4,26 @@
 
   const problems = [
     {
-      number: '01',
       title: 'Dueño esclavo',
       image: 'ferreterias/dueno-esclavo.webp',
       alt: 'Dueño de ferretería sobrecargado porque todo depende de él'
     },
     {
-      number: '02',
       title: 'Stock desordenado',
       image: 'ferreterias/stock-desordenado.webp',
       alt: 'Ferretería con stock desordenado y dificultad para encontrar productos'
     },
     {
-      number: '03',
       title: 'Ventas perdidas',
       image: 'ferreterias/ventas-perdidas.webp',
       alt: 'Cliente retirándose de una ferretería porque no encontraron el producto'
     },
     {
-      number: '04',
       title: 'Compras a ciegas',
       image: 'ferreterias/compras-a-ciegas.webp',
       alt: 'Dueño de ferretería revisando compras sin saber qué productos rotan'
     },
     {
-      number: '05',
       title: 'Dinero dormido',
       image: 'ferreterias/Dinero%20Dormido%20en%20la%20Ferreter%C3%ADa.png',
       alt: 'Producto de ferretería de baja rotación que representa dinero inmovilizado'
@@ -62,10 +57,8 @@
       .fer-problem-media{display:flex;justify-content:center}
       .fer-problem-media img{display:block;width:100%;max-width:220px;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:18px;box-shadow:0 14px 34px rgba(0,0,0,.12);background:#eef2f4}
       .fer-problem-copy{max-width:720px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
-      .fer-problem-number{display:inline-flex;align-items:center;justify-content:center;min-width:48px;height:29px;padding:0 10px;border-radius:999px;background:#00233f;color:#fff;font-size:11px;font-weight:950;letter-spacing:1.2px}
-      .fer-problem h3{margin:12px 0 0;color:#00233f;font-size:clamp(30px,4vw,46px);line-height:1;letter-spacing:-1.8px}
+      .fer-problem h3{margin:0;color:#00233f;font-size:clamp(30px,4vw,46px);line-height:1;letter-spacing:-1.8px}
       .fer-problem:first-of-type{border-color:#f0b37d;background:linear-gradient(135deg,#fff9f2 0%,#fff 58%)}
-      .fer-problem:first-of-type .fer-problem-number{background:#f57c00}
       @media(max-width:700px){
         .page-hero.fer-page-hero{padding-bottom:30px!important}
         .fer-problems{padding:8px 18px 52px}
@@ -110,7 +103,7 @@
         ${problems.map((problem, index) => `
           <article class="fer-problem${index % 2 ? ' is-reverse' : ''}">
             <div class="fer-problem-media"><img src="${problem.image}" width="220" height="391" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async" alt="${problem.alt}"></div>
-            <div class="fer-problem-copy"><span class="fer-problem-number">${problem.number}</span><h3>${problem.title}</h3></div>
+            <div class="fer-problem-copy"><h3>${problem.title}</h3></div>
           </article>
         `).join('')}
       </div>
