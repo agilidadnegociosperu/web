@@ -18,6 +18,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Improve ferretería images for high-DPI displays
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          for img in \
+            public/ferreterias/dueno-esclavo.webp \
+            public/ferreterias/stock-desordenado.webp \
+            public/ferreterias/ventas-perdidas.webp \
+            public/ferreterias/compras-a-ciegas.webp
+          do
+            tmp="${img%.webp}.hq.webp"
+            convert "$img" \
+              -filter Lanczos \
+              -resize 400% \
+              -unsharp 0x0.75+0.60+0.02 \
+              -strip \
+              -quality 90 \
+              "$tmp"
+            mv "$tmp" "$img"
+          done
       - run: npm install
       - run: npm run build
       - name: Prepare clean-route Pages artifact
